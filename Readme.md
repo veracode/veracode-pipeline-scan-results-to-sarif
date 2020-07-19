@@ -1,21 +1,20 @@
-# Hello world docker action
+# Hello world javascript action
 
 This action prints "Hello World" or "Hello" + the name of a person to greet to the log.
 
 ## Inputs
 
-### `who-to-greet`
+### `pipeline-results-json`
 
-**Required** The name of the person to greet. Default `"World"`.
+**Required** The path to the pipeline json result file. Default `"results.json"`.
 
-## Outputs
+### `output-results-sarif`
 
-### `time`
-
-The time we greeted you.
+**Required** The path to the SARIF format result file. Default `"veracode-results.sarif"`.
 
 ## Example usage
 
-uses: actions/hello-world-docker-action@v1
-with:
-  who-to-greet: 'Mona the Octocat'
+uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1  
+with:  
+&nbsp;&nbsp;&nbsp;&nbsp;pipeline-results-json: results.json  
+&nbsp;&nbsp;&nbsp;&nbsp;output-results-sarif: veracode-results.sarif  

@@ -8,5 +8,8 @@
         "start": "node convert.js INPUT_FILENAME: OUTPUT_FILENAME:",
         "parse-test": "node convert.js INPUT_FILENAME:test/results.json OUTPUT_FILENAME:"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@actions/core": "^1.2.4",
+        "@actions/github": "^4.0.0"
+    }
 }

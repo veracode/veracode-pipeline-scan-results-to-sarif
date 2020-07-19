@@ -1,16 +1,15 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Convert Veracode Pipeline to SARIF'
+description: 'Convert the output results file from Veracode Pipeline Scan to a valid SARIF file'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  pipeline-results-json:  # id of input
+    description: 'location of the pipeline json result file'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: 'results.json'
+  output-results-sarif:  # id of input
+    description: 'the path to the SARIF file as an output of the transformation'
+    required: true
+    default: 'veracode-results.sarif'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+  using: 'node12'
+  main: 'convert-action.js'
