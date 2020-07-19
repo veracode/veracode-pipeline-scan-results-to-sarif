@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
+//onst github = require('@actions/github');
 
 const fs = require('fs');
 
@@ -8,14 +8,14 @@ try {
     const outputFileName = core.getInput('output-results-sarif'); // 'veracode-results.sarif'
 
     // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
+    //const payload = JSON.stringify(github.context.payload, undefined, 2)
+    //console.log(`The event payload: ${payload}`);
 
     var results = {};
 
     let rawdata = fs.readFileSync(inputFileName);
     results = JSON.parse(rawdata);
-    console.log('Pipeline Scan result found and parsed as a valid JSON file');
+    console.log('Pipeline Scan results file found and parsed - validated JSON file');
 
     //"scan_status": "SUCCESS"
     if (results.scan_status==='SUCCESS') {
