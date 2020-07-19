@@ -1,0 +1,26 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Test SARIF conversion workflow
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  convert_to_sarif:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: convert action step
+      uses: ./
+      id: convert
+      with:
+        pipeline-results-json: test/results.json
+    - name: check file list
+      run: ls -la
+    - name: finish
+      run: echo "finish convert Veracode pipeline scan result file" 
