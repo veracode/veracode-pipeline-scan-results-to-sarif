@@ -1,6 +1,10 @@
-# Hello world javascript action
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Lerer_veracode-pipeline-scan-results-to-sarif&metric=alert_status)](https://sonarcloud.io/dashboard?id=Lerer_veracode-pipeline-scan-results-to-sarif)
 
-This action prints "Hello World" or "Hello" + the name of a person to greet to the log.
+# Veracode Pipeline scan results to SARIF - github action
+
+This action take the Veracode pipeline scan json result file as an input and transfornm it to a SARIF format. </br>
+
+If your github account allows code scanning, you can then upload the `sarif` file to show the scan findings 
 
 ## Inputs
 
@@ -10,11 +14,11 @@ This action prints "Hello World" or "Hello" + the name of a person to greet to t
 
 ### `output-results-sarif`
 
-**Required** The path to the SARIF format result file. Default `"veracode-results.sarif"`.
+**Optional** The path to the SARIF format result file. Default `"veracode-results.sarif"`.
 
 ## Example usage
 
-uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1  
+uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.2  
 with:  
 &nbsp;&nbsp;&nbsp;&nbsp;pipeline-results-json: results.json  
 &nbsp;&nbsp;&nbsp;&nbsp;output-results-sarif: veracode-results.sarif  
