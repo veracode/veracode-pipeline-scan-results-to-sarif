@@ -50,7 +50,7 @@ try {
                     }
                 }
             }
-            let serStr = this.sevIntToStr(issue.Severity);
+            let serStr = sevIntToStr(issue.Severity);
             let resultItem = {
                 level: serStr,
                 message: {
@@ -80,7 +80,7 @@ try {
         fs.writeFileSync(outputFileName,JSON.stringify(sarifFileJSONContent));
         console.log('SARIF file created: '+outputFileName);
     }
-} catch (readerr) {
+} catch (error) {
     core.setFailed(error.message);
 }
 
