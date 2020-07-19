@@ -7,11 +7,13 @@ const DEFAULT_OUTPUT_FILE = 'veracode-results.sarif';
 let outputFileName = DEFAULT_OUTPUT_FILE;
 let inputFileName = DEFAULT_INPUT_FILE;
 
-if (process.argv.length>=3){
-    inputFileName = process.argv[2];;
+let args = process.argv;
+
+if (args.length>=3){
+    inputFileName = args[2];
 }   
-if (process.argv.length>=4) {
-    outputFileName = process.argv[3];
+if (args.length>=4) {
+    outputFileName = args[3];
 } 
 
 try {
