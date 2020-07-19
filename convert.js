@@ -8,6 +8,21 @@ const DEFAULT_OUTPUT_FILE = 'veracode-results.sarif';
 const inputAttrPrefix = 'INPUT_FILENAME:';
 const outputAttrPrefix = 'OUTPUT_FILENAME:';
 
+
+// none,note,warning,error
+const sevIntToStr = (sevInt) => {
+    const intSev = parseInt(sevInt);
+    if (intSev===5 || intSev===4){
+        return 'error';
+    } else if (intSev===3) {
+        return 'warning';
+    } else if (intSev===2||intSev===1 || intSev===0){
+        return 'note';
+    } else {
+        return 'none'
+    }
+};
+
 var results = {};
 let outputFileName = DEFAULT_OUTPUT_FILE;
 let inoutFileName = DEFAULT_INPUT_FILE;
@@ -42,12 +57,13 @@ if (results.scan_status==='SUCCESS') {
                     uri: issueFileLocation.File
                 },
                 region: {
-                    startLine: issueFileLocation.Line
+                    startLine: parseInt(issueFileLocation.Line)
                 }
             }
         }
+        let serStr = sevIntToStr(issue.Severity);
         let resultItem = {
-            level: issue.Severity,
+            level: serStr,
             message: {
                 text: issue.Title + ' - '+issue.IssueType,
             },
