@@ -6,7 +6,7 @@
     "main": "convert.js",
     "scripts": {
         "start": "node convert.js INPUT_FILENAME: OUTPUT_FILENAME:",
-        "parse-test": "node convert.js INPUT_FILENAME:test/results.json OUTPUT_FILENAME:"
+        "test-parse": "node test/convert.js test/results.json test/pipeline.sarif"
     },
     "dependencies": {
         "@actions/core": "^1.2.4",

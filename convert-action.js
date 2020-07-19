@@ -3,6 +3,8 @@ const core = require('@actions/core');
 
 const fs = require('fs');
 
+const pipelineInputFileName = core.getInput('pipeline-results-json'); // 'results.json'
+const sarifOutputFileName = core.getInput('output-results-sarif'); // 'veracode-results.sarif'
 
 // none,note,warning,error
 const sevIntToStr = (sevInt => {
@@ -18,14 +20,7 @@ const sevIntToStr = (sevInt => {
     }
 })
 
-try {
-    const inputFileName = core.getInput('pipeline-results-json'); // 'results.json'
-    const outputFileName = core.getInput('output-results-sarif'); // 'veracode-results.sarif'
-
-    // Get the JSON webhook payload for the event that triggered the workflow
-    //const payload = JSON.stringify(github.context.payload, undefined, 2)
-    //console.log(`The event payload: ${payload}`);
-
+const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
     var results = {};
 
     let rawdata = fs.readFileSync(inputFileName);
@@ -80,8 +75,16 @@ try {
         fs.writeFileSync(outputFileName,JSON.stringify(sarifFileJSONContent));
         console.log('SARIF file created: '+outputFileName);
     }
+}
+
+try {
+    convertPipelineResultFileToSarifFile(pipelineInputFileName,sarifOutputFileName);
 } catch (error) {
     core.setFailed(error.message);
 }
 
+module.exports = {
+    sevIntToStr: sevIntToStr,
+    convertToSarif: convertPipelineResultFileToSarifFile
+}
 
