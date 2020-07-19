@@ -1,0 +1,12 @@
+{
+    "name": "convert_veracode_pipeline_scan_result_to_sarif_2.1.0",
+    "version": "0.0.1",
+    "description": "Convert veracode pipeline scan JSON output to SARIF format",
+    "author": "First Last <first.last@example.com>",
+    "main": "convert.js",
+    "scripts": {
+        "start": "node convert.js INPUT_FILENAME: OUTPUT_FILENAME:",
+        "parse-test": "node convert.js INPUT_FILENAME:test/results.json OUTPUT_FILENAME:"
+    },
+    "dependencies": {}
+}
