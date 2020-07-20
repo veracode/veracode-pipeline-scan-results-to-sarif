@@ -24,7 +24,16 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
 
 ## Example usage
 
-uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.2  
-with:  
-&nbsp;&nbsp;&nbsp;&nbsp;pipeline-results-json: results.json  
-&nbsp;&nbsp;&nbsp;&nbsp;output-results-sarif: veracode-results.sarif  
+```
+- name: Convert pipeline scan output to SARIF format
+  id: convert   
+  uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.2
+  with:
+    pipeline-results-json: results.json<br>
+    output-results-sarif: veracode-results.sarif
+    
+- name: upload sarif file to repository
+  uses: github/codeql-action/upload-sarif@v1
+  with: # Path to SARIF file relative to the root of the repository
+    sarif_file: veracode-results.sarif
+```
