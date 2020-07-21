@@ -4,7 +4,7 @@ This action take the Veracode pipeline scan json result file as an input and tra
 
 Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See, [details for the other pipeline scan attributes](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/zjaZE08bAYZVPBWWbgmZvw)</br>
 
-If your github account allows code scanning, you can then upload the `sarif` file to show the scan findings 
+If your github account allows code scanning, you can then upload the `sarif` file to show the scan findings
 
 See - [Veracode pipeline scan example in github action](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/MVXQBY1PzfrTXGd6V~ZgxA)
 
@@ -24,12 +24,12 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
 
 ```
 - name: Convert pipeline scan output to SARIF format
-  id: convert   
-  uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.0
+  id: convert
+  uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.1
   with:
     pipeline-results-json: results.json
     output-results-sarif: veracode-results.sarif
-    
+
 - name: upload sarif file to repository
   uses: github/codeql-action/upload-sarif@v1
   with: # Path to SARIF file relative to the root of the repository
