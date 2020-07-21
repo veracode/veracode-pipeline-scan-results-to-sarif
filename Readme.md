@@ -29,7 +29,7 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
   id: convert   
   uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.2
   with:
-    pipeline-results-json: results.json<br>
+    pipeline-results-json: results.json
     output-results-sarif: veracode-results.sarif
     
 - name: upload sarif file to repository
