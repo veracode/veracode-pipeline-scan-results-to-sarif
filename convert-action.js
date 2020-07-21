@@ -123,7 +123,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
             let resultItem = {
                 level: serStr,
                 message: {
-                    text: issue.Title + ' - '+issue.DisplayText,
+                    text: issue.DisplayText,
                 },
                 locations: [location],
                 ruleId: issue.CWEId
