@@ -44,9 +44,6 @@ const addRuleToRules = (issue,rules) => {
         helpUri: "https://cwe.mitre.org/data/definitions/"+issue.CWEId+".html",
         properties: {
             category: issue.IssueTypeId
-        },
-        messageStrings: {
-            default: issue.IssueType 
         }
     }
 
@@ -129,8 +126,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
                     text: issue.Title + ' - '+issue.DisplayText,
                 },
                 locations: [location],
-                ruleId: issue.CWEId,
-                ruleMessageId: "default"
+                ruleId: issue.CWEId
             }
             return resultItem;
         })
