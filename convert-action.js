@@ -21,7 +21,7 @@ const sevIntToStr = (sevInt => {
 })
 
 const addRuleToRules = (issue,rules) => {
-    if (rules.filter(rule => rule.id===issue.CWEId).length>0) {
+    if (rules.filter(ruleItem => ruleItem.id===issue.CWEId).length>0) {
         return null;
     }
     /*
