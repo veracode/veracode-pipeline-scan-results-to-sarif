@@ -39,11 +39,14 @@ const addRuleToRules = (issue,rules) => {
     let rule = {
         id: issue.CWEId,
         shortDescription: {
-            text: issue.IssueType
+            text: "CWE-"+issue.CWEId+": "+issue.IssueType
         },
         helpUri: "https://cwe.mitre.org/data/definitions/"+issue.CWEId+".html",
         properties: {
             category: issue.IssueTypeId
+        },
+        messageStrings: {
+            default: issue.IssueType 
         }
     }
 
@@ -126,7 +129,8 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
                     text: issue.Title + ' - '+issue.DisplayText,
                 },
                 locations: [location],
-                ruleId: issue.CWEId
+                ruleId: issue.CWEId,
+                ruleMessageId: "default"
             }
             return resultItem;
         })
