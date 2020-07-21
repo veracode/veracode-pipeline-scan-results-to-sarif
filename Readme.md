@@ -27,7 +27,7 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
 ```
 - name: Convert pipeline scan output to SARIF format
   id: convert   
-  uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.2
+  uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.3
   with:
     pipeline-results-json: results.json
     output-results-sarif: veracode-results.sarif
