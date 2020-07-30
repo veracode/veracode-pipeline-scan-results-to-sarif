@@ -35,8 +35,8 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
   with:
     pipeline-results-json: results.json
     output-results-sarif: veracode-results.sarif
-    source-base-path-1: "^com\/veracode:src\/main\/java\/com\/veracode"
-    source-base-path-2: "^WEB-INF:src\/main\/webapp\/WEB-INF"
+    source-base-path-1: "^com/veracode:src/main/java/com/veracode"
+    source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
     
     
 - name: upload sarif file to repository
