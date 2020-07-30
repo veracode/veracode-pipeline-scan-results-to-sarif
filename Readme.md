@@ -22,15 +22,22 @@ See - [Veracode pipeline scan example in github action](https://help.veracode.co
 
 **Optional** The path to the SARIF format result file. Default `"veracode-results.sarif"`.
 
+### `source-base-path-1` (can go from `1` to `3`)
+
+**Optional** In some compilations, the path representation is not the same as the repository root folder. In order to add the ability to navigate back from the scanning issue to the file in the repository, a base path to the source is required. The input format is regex base (`"[search pattern]:[replace with pattern]"`). Defalue `""`.
+
 ## Example usage
 
 ```
 - name: Convert pipeline scan output to SARIF format
   id: convert   
-  uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.3
+  uses: Lerer/veracode-pipeline-scan-results-to-sarif@v1.0.4
   with:
     pipeline-results-json: results.json
     output-results-sarif: veracode-results.sarif
+    source-base-path-1: "^com\/veracode:src\/main\/java\/com\/veracode"
+    source-base-path-2: "^WEB-INF:src\/main\/webapp\/WEB-INF"
+    
     
 - name: upload sarif file to repository
   uses: github/codeql-action/upload-sarif@v1
