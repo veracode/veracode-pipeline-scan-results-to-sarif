@@ -5,6 +5,35 @@ const fs = require('fs');
 
 const pipelineInputFileName = core.getInput('pipeline-results-json'); // 'results.json'
 const sarifOutputFileName = core.getInput('output-results-sarif'); // 'veracode-results.sarif'
+const srcBasePath1 = core.getInput('source-base-path-1'); // base path for the source in the repository
+const srcBasePath2 = core.getInput('source-base-path-2'); // base path for the source in the repository
+const srcBasePath3 = core.getInput('source-base-path-3'); // base path for the source in the repository
+
+const replacer = [];
+
+const setupSourceReplacement = (sub1,sub2,sub3) => {
+    if (sub1!=undefined && sub1.length>0) {
+        _parseReplacer(sub1);
+        if (sub2!=undefined && sub2.length>0) {
+            _parseReplacer(sub2);
+            if (sub3!=undefined && sub3.length>0) {
+                _parseReplacer(sub3);
+            }
+        }
+    }
+}
+
+const _parseReplacer = (input) => {
+    const values = input.split(':');
+    if (values.length!=2) {
+        throw new Error('source-base-path attrbute in wrong format. Please refer to the action documentation');
+    }
+    const regEx = RegExp(values[0]);
+    replacer.push({
+        regex: regEx,
+        value: values[1]
+    })
+}
 
 // none,note,warning,error
 const sevIntToStr = (sevInt => {
@@ -48,6 +77,16 @@ const addRuleToRules = (issue,rules) => {
     }
 
     return rule;
+}
+
+const getFilePath = (filePath) => {
+    let final = filePath;
+    replacer.forEach(element => {
+        if (element.regex.test(final)){
+            final = final.replace(element.regex,element.value);
+        }
+    });
+    return final;
 }
 
 /*
@@ -106,11 +145,12 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
             }
 
             // construct flaw location
-            let issueFileLocation = issue.Files.SourceFile;
+            const issueFileLocation = issue.Files.SourceFile;
+            const filePath = getFilePath(issueFileLocation.File);
             let location = {
                 physicalLocation: {
                     artifactLocation: {
-                        uri: issueFileLocation.File
+                        uri: filePath
                     },
                     region: {
                         startLine: parseInt(issueFileLocation.Line)
@@ -155,6 +195,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
 }
 
 try {
+    setupSourceReplacement(srcBasePath1,srcBasePath2,srcBasePath3);
     convertPipelineResultFileToSarifFile(pipelineInputFileName,sarifOutputFileName);
 } catch (error) {
     core.setFailed(error.message);
@@ -162,6 +203,7 @@ try {
 
 module.exports = {
     sevIntToStr: sevIntToStr,
-    convertToSarif: convertPipelineResultFileToSarifFile
+    convertToSarif: convertPipelineResultFileToSarifFile,
+    setupSourceReplacement: setupSourceReplacement
 }
 

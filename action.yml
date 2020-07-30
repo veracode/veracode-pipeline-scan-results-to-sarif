@@ -9,7 +9,19 @@ inputs:
   output-results-sarif:  # id of input
     description: 'the path to the SARIF file as an output of the transformation'
     required: true
-    default: 'veracode-results.sarif'
+    default: 'veracode-results.sarif'  
+  source-base-path-1:  
+    description: 'a path prefix conversion before publish in the SARIF file'
+    required: false
+    default: ''
+  source-base-path-2:  
+    description: 'a path prefix conversion before publish in the SARIF file'
+    required: false
+    default: ''
+  source-base-path-3:  
+    description: 'a path prefix conversion before publish in the SARIF file'
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'convert-action.js'
