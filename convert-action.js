@@ -72,7 +72,11 @@ const addRuleToRules = (issue,rules) => {
         },
         helpUri: "https://cwe.mitre.org/data/definitions/"+issue.CWEId+".html",
         properties: {
-            category: issue.IssueTypeId
+            category: issue.IssueTypeId,
+            tags: [issue.IssueTypeId]
+        },
+        defaultConfiguration: {
+            level: sevIntToStr(issue.Severity)
         }
     }
 
