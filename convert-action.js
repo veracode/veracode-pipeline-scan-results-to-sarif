@@ -225,6 +225,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
 }
 
 try {
+    sliceReportLevels(reportLevels);
     setupSourceReplacement(srcBasePath1,srcBasePath2,srcBasePath3);
     convertPipelineResultFileToSarifFile(pipelineInputFileName,sarifOutputFileName);
 } catch (error) {
