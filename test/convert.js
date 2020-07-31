@@ -1,5 +1,5 @@
 
-const { convertToSarif,setupSourceReplacement } = require('../convert-action');
+const { convertToSarif,setupSourceReplacement,sliceReportLevels } = require('../convert-action');
 
 const DEFAULT_INPUT_FILE = 'results.json';
 const DEFAULT_OUTPUT_FILE = 'veracode-results.sarif';
@@ -18,7 +18,11 @@ if (args.length>=4) {
     outputFileName = args[3];
 } 
 
-try {
+try { 
+    sliceReportLevels('4:1:0');
+    sliceReportLevels('3:0:0');
+    sliceReportLevels('4:3:0');
+    sliceReportLevels('3:1:0');
     setupSourceReplacement(sub1,sub2);
     convertToSarif(inputFileName,outputFileName);
 } catch (error) {

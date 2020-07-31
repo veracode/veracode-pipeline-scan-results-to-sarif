@@ -22,6 +22,10 @@ inputs:
     description: 'a path prefix conversion before publish in the SARIF file'
     required: false
     default: ''
+  finding-rule-level:
+    description: 'The conversion rule of Veracode findings to GitHub level'
+    required: true
+    default: '4:3:0'
 runs:
   using: 'node12'
   main: 'convert-action.js'
