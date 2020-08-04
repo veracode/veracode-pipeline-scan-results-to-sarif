@@ -5,19 +5,74 @@ const fs = require('fs');
 
 const pipelineInputFileName = core.getInput('pipeline-results-json'); // 'results.json'
 const sarifOutputFileName = core.getInput('output-results-sarif'); // 'veracode-results.sarif'
+const srcBasePath1 = core.getInput('source-base-path-1'); // base path for the source in the repository
+const srcBasePath2 = core.getInput('source-base-path-2'); // base path for the source in the repository
+const srcBasePath3 = core.getInput('source-base-path-3'); // base path for the source in the repository
+const reportLevels = core.getInput('finding-rule-level');
+
+const replacer = [];
+const levels = {};
+
+const setupSourceReplacement = (sub1,sub2,sub3) => {
+    if (sub1!=undefined && sub1.length>0) {
+        _parseReplacer(sub1);
+        if (sub2!=undefined && sub2.length>0) {
+            _parseReplacer(sub2);
+            if (sub3!=undefined && sub3.length>0) {
+                _parseReplacer(sub3);
+            }
+        }
+    }
+}
+
+const _parseReplacer = (input) => {
+    const values = input.split(':');
+    if (values.length!=2) {
+        throw new Error('source-base-path attrbute in wrong format. Please refer to the action documentation');
+    }
+    const regEx = RegExp(values[0]);
+    replacer.push({
+        regex: regEx,
+        value: values[1]
+    })
+}
+
+const sliceReportLevels = (requestedLevels) => {
+    try {
+        const split = requestedLevels.split(':');
+        if (split===undefined || split.length!=3){
+            throw new Error("'finding-rule-level' should have 3 integer values seporated with ':' and no white spaces");
+        }
+        let vl = 5;
+        let gl = 'error';
+        let split_loc = 0;
+        let split_value = parseInt(split[split_loc]);
+        while (vl>=0){
+            if (vl>=split_value){
+                levels[""+vl] = gl;
+                vl--;
+            } else {
+                split_loc++;
+                if (split_loc==3) {
+                    return;
+                }
+                split_value = parseInt(split[split_loc]);
+                if (gl === 'error'){
+                    gl = 'warning';
+                } else {
+                    gl = 'note';
+                }
+            }
+        }
+    } catch (e){
+        console.log(e);
+        throw new Error("See documentation for valid valuse for 'finding-rule-level'");
+    }
+}
 
 // none,note,warning,error
 const sevIntToStr = (sevInt => {
-    const intSev = parseInt(sevInt);
-    if (intSev===5 || intSev===4){
-        return 'error';
-    } else if (intSev===3) {
-        return 'warning';
-    } else if (intSev===2||intSev===1 || intSev===0){
-        return 'note';
-    } else {
-        return 'none'
-    }
+    return levels[sevInt];
 })
 
 const addRuleToRules = (issue,rules) => {
@@ -43,11 +98,25 @@ const addRuleToRules = (issue,rules) => {
         },
         helpUri: "https://cwe.mitre.org/data/definitions/"+issue.CWEId+".html",
         properties: {
-            category: issue.IssueTypeId
+            category: issue.IssueTypeId,
+            tags: [issue.IssueTypeId]
+        },
+        defaultConfiguration: {
+            level: sevIntToStr(issue.Severity)
         }
     }
 
     return rule;
+}
+
+const getFilePath = (filePath) => {
+    let final = filePath;
+    replacer.forEach(element => {
+        if (element.regex.test(final)){
+            final = final.replace(element.regex,element.value);
+        }
+    });
+    return final;
 }
 
 /*
@@ -106,11 +175,12 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
             }
 
             // construct flaw location
-            let issueFileLocation = issue.Files.SourceFile;
+            const issueFileLocation = issue.Files.SourceFile;
+            const filePath = getFilePath(issueFileLocation.File);
             let location = {
                 physicalLocation: {
                     artifactLocation: {
-                        uri: issueFileLocation.File
+                        uri: filePath
                     },
                     region: {
                         startLine: parseInt(issueFileLocation.Line)
@@ -155,6 +225,8 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
 }
 
 try {
+    sliceReportLevels(reportLevels);
+    setupSourceReplacement(srcBasePath1,srcBasePath2,srcBasePath3);
     convertPipelineResultFileToSarifFile(pipelineInputFileName,sarifOutputFileName);
 } catch (error) {
     core.setFailed(error.message);
@@ -162,6 +234,8 @@ try {
 
 module.exports = {
     sevIntToStr: sevIntToStr,
-    convertToSarif: convertPipelineResultFileToSarifFile
+    sliceReportLevels: sliceReportLevels,
+    convertToSarif: convertPipelineResultFileToSarifFile,
+    setupSourceReplacement: setupSourceReplacement
 }
 
