@@ -1,5 +1,5 @@
 # action.yml
-name: 'Convert Veracode Pipeline to SARIF'
+name: 'Convert Veracode Pipeline scan results to SARIF'
 description: 'Convert the output results file from Veracode Pipeline Scan to a valid SARIF file'
 inputs:
   pipeline-results-json:  # id of input
