@@ -45,7 +45,7 @@ Example values:
 | Default value| `"4:3:0"` |
 --- | ---
 # Example usage
-
+```
 - name: Convert pipeline scan output to SARIF format
   id: convert   
   uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.2
@@ -60,3 +60,4 @@ Example values:
   uses: github/codeql-action/upload-sarif@v1
   with: # Path to SARIF file relative to the root of the repository
     sarif_file: veracode-results.sarif
+ ```
