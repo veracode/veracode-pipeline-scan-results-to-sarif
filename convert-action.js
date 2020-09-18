@@ -209,7 +209,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
                 {
                     tool : {
                         driver : {
-                            name : "Veracode Pipeline Scanner",
+                            name : "Veracode Static Analysis Pipeline Scan",
                             rules: rules
                         }
                     },
