@@ -161,7 +161,7 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
 
     //"scan_status": "SUCCESS"
     if (results.scan_status==='SUCCESS') {
-        let issues = results.results.TestResults.Issues.Issue;
+        let issues = results.findings;
         console.log('Issues count: '+issues.length);
 
         let rules=[];
