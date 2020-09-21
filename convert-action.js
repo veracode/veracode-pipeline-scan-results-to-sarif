@@ -175,28 +175,28 @@ const convertPipelineResultFileToSarifFile = (inputFileName,outputFileName) => {
             }
 
             // construct flaw location
-            const issueFileLocation = issue.Files.SourceFile;
-            const filePath = getFilePath(issueFileLocation.File);
+            const issueFileLocation = issue.files.source_file;
+            const filePath = getFilePath(issueFileLocation.file);
             let location = {
                 physicalLocation: {
                     artifactLocation: {
                         uri: filePath
                     },
                     region: {
-                        startLine: parseInt(issueFileLocation.Line)
+                        startLine: parseInt(issueFileLocation.line)
                     }
                 }
             }
             // get the severity number to name
-            let serStr = sevIntToStr(issue.Severity);
+            let serStr = sevIntToStr(issue.severity);
             // construct the issue
             let resultItem = {
                 level: serStr,
                 message: {
-                    text: issue.DisplayText,
+                    text: issue.display_text,
                 },
                 locations: [location],
-                ruleId: issue.CWEId
+                ruleId: issue.cwe_id
             }
             return resultItem;
         })
