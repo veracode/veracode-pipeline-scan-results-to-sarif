@@ -92,17 +92,17 @@ const addRuleToRules = (issue,rules) => {
             }
     */
     let rule = {
-        id: issue.CWEId,
+        id: issue.cwe_id,
         shortDescription: {
-            text: "CWE-"+issue.CWEId+": "+issue.IssueType
+            text: "CWE-"+issue.cwe_id+": "+issue.issue_type
         },
-        helpUri: "https://cwe.mitre.org/data/definitions/"+issue.CWEId+".html",
+        helpUri: "https://cwe.mitre.org/data/definitions/"+issue.cwe_id+".html",
         properties: {
-            category: issue.IssueTypeId,
-            tags: [issue.IssueTypeId]
+            category: issue.issue_type_id,
+            tags: [issue.issue_type_id]
         },
         defaultConfiguration: {
-            level: sevIntToStr(issue.Severity)
+            level: sevIntToStr(issue.severity)
         }
     }
 
