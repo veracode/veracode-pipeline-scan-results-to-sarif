@@ -1,4 +1,4 @@
-# This workflow will inititiave a Veracide Static Analysis Pipeline scan, return a results.json and convert to SARIF for upload as a code scanning alert
+# This workflow will initiate a Veracode Static Analysis Pipeline scan, return a results.json and convert to SARIF for upload as a code scanning alert
 
 name: Veracode Static Analysis Pipeline Scan
 

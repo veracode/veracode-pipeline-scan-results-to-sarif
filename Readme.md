@@ -1,53 +1,56 @@
-# Veracode Pipeline scan results to SARIF - Github Action
+# Veracode Pipeline scan results to SARIF - GitHub Action
 
-This action take the Veracode pipeline scan json result file as an input and transform it to a SARIF format. <br>
+This action take the Veracode pipeline scan json result file as an input and transform it to a SARIF format.
 
-Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See, [details for the other pipeline scan attributes](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/zjaZE08bAYZVPBWWbgmZvw)</br>
+Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See [details for the other pipeline scan attributes](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/zjaZE08bAYZVPBWWbgmZvw).
 
-If your github account allows code scanning, you can then upload the `sarif` file to show the scan findings
+If your GitHub account allows code scanning, you can then upload the `sarif` file to show the scan findings.
 
-See - [Veracode pipeline scan example in github action](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/MVXQBY1PzfrTXGd6V~ZgxA)
+See [Veracode pipeline scan example in GitHub action](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/MVXQBY1PzfrTXGd6V~ZgxA)
 
-<hr>
+---
 
-# Inputs
+## Inputs
 
-## `pipeline-results-json`
+### `pipeline-results-json`
 
-**Required** The path to the pipeline json result file. 
+**Required** The path to the pipeline json result file.
 |Default value |  `"results.json"`|
 --- | ---
 
-## `output-results-sarif`
+### `output-results-sarif`
 
 **Optional** The path to the SARIF format result file.
 |Default value|`"veracode-results.sarif"`|
 --- | ---
 
-## `source-base-path-1` (can go from `1` to `3`)
+### `source-base-path-1` (can go from `1` to `3`)
 
-**Optional** In some compilations, the path representation is not the same as the repository root folder. In order to add the ability to navigate back from the scanning issue to the file in the repository, a base path to the source is required. The input format is regex base (`"[search pattern]:[replace with pattern]"`). 
+**Optional** In some compilations, the path representation is not the same as the repository root folder. In order to add the ability to navigate back from the scanning issue to the file in the repository, a base path to the source is required. The input format is regex base (`"[search pattern]:[replace with pattern]"`).
 | Default value | `""` |
 --- | ---
 
-## `finding-rule-level`
+### `finding-rule-level`
 
 **Optional** The conversion rule from Veracode finding levels to Github levels.
 
 - **Veracode levels**: 5 = `Very High`, 4 = `High`, 3 = `Medium`, 2 = `Low`, 1 = `Very Low`, 0 = `informational`.
 - **GitHub levels**: `error`, `warning`, `note`.  
 
-Example values: 
+Example values:
+
 - "4:3:0" => `High` and `Very high` will show as `error`, Medium as `warning` and the rest as `note`
 - "3:2:1" => `Medium` and above will show as `error`, `Low` as `warning`, `Very Low` as `note`, and `informational` will not show at all
 
-**Note:**  Only **`error`** level will fail pull request check 
+**Note:**  Only **`error`** level will fail pull request check
 | Default value| `"4:3:0"` |
 --- | ---
-# Example usage
-```
+
+## Example usage
+
+```yaml
 - name: Convert pipeline scan output to SARIF format
-  id: convert   
+  id: convert
   uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.2
   with:
     pipeline-results-json: results.json
