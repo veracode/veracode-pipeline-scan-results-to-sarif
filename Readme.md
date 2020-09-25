@@ -1,10 +1,10 @@
-# Veracode Pipeline scan results to SARIF - GitHub Action
+# Veracode Static Analysis Pipeline scan and import of results to SARIF - GitHub Action
 
-This action takes the Veracode pipeline scan JSON result file as an input and transforms it to a SARIF format.
+This action has a workflow which initiates a Veracode Static Analyis Pipeline Scan and takes the Veracode pipeline scan JSON result file as an input and transforms it to a SARIF format.
 
 Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See [details for the other pipeline scan attributes](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/zjaZE08bAYZVPBWWbgmZvw).
 
-If your GitHub account allows code scanning, you can then upload the `sarif` file to show the scan findings.
+If your GitHub account allows code scanning alerts, you can then upload the `sarif` file to show the scan findings.
 
 See [Veracode pipeline scan example in GitHub action](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/MVXQBY1PzfrTXGd6V~ZgxA).
 
