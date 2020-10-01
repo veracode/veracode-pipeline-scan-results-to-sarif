@@ -9,7 +9,7 @@
         "test-parse": "node test/convert.js test/results.json test/pipeline.sarif"
     },
     "dependencies": {
-        "@actions/core": "^1.2.4",
+        "@actions/core": "^1.2.6",
         "@actions/github": "^4.0.0"
     }
 }
