@@ -4,6 +4,7 @@ name: Veracode Static Analysis Pipeline Scan
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+# Also allows for manual initiation via the actions tab.
 on:
   workflow_dispatch: 
   push:
@@ -44,7 +45,8 @@ jobs:
         path: veracode-pipeline-scan-results-to-sarif.zip
     
     # download the Veracode Static Analysis Pipeline scan jar
-    - uses: wei/curl@master
+    - name: Download Pipeline Scan jar
+      uses: wei/curl@master
       with:
         args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
     - run: unzip -o pipeline-scan-LATEST.zip
@@ -53,7 +55,8 @@ jobs:
       with:
         java-version: 1.8
     # Be sure to appropriately define the "file" parameter     
-    - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file veracode-pipeline-scan-results-to-sarif.zip
+    - name: Upload file to pipeline scan service
+      run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file veracode-pipeline-scan-results-to-sarif.zip
       continue-on-error: true
     - uses: actions/upload-artifact@v1
       with:
