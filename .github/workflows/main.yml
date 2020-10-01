@@ -5,10 +5,12 @@ name: Veracode Static Analysis Pipeline Scan
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
+  workflow_dispatch: 
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,12 +25,19 @@ jobs:
       with:
         repository: ''
 
-    - uses: papeloto/action-zip@v1
-      with:
-        files: /
-        recursive: true
-        dest: veracode-pipeline-scan-results-to-sarif.zip
+
+    # If your application is packaged as a ZIP (JavaScript, TypeScript, Python), define the path to the source
+    # - uses: papeloto/action-zip@v1
+    #  with:
+    #   files: /
+    #    recursive: true
+    #    dest: veracode-pipeline-scan-results-to-sarif.zip
           
+    # If your application is built using Maven, package it.  Setup the path to the pom file appropriately
+    # - run: mvn package --file $GITHUB_WORKSPACE/pom.xml
+
+
+
     - uses: actions/upload-artifact@v1
       with:
         name: my-artifact
@@ -43,6 +52,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    # Be sure to appropriately define the "file" parameter     
     - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file veracode-pipeline-scan-results-to-sarif.zip
       continue-on-error: true
     - uses: actions/upload-artifact@v1
