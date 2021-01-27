@@ -1,0 +1,579 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Veracode Static Analysis Pipeline Scan",
+          "rules": [
+            {
+              "id": "78",
+              "name": "Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+              "shortDescription": {
+                "text": "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/78.html",
+              "properties": {
+                "category": "taint",
+                "tags": [
+                  "taint"
+                ]
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "80",
+              "name": "Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)",
+              "shortDescription": {
+                "text": "CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/80.html",
+              "properties": {
+                "category": "taint",
+                "tags": [
+                  "taint"
+                ]
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "117",
+              "name": "Improper Output Neutralization for Logs",
+              "shortDescription": {
+                "text": "CWE-117: Improper Output Neutralization for Logs"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/117.html",
+              "properties": {
+                "category": "taint",
+                "tags": [
+                  "taint"
+                ]
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "201",
+              "name": "Information Exposure Through Sent Data",
+              "shortDescription": {
+                "text": "CWE-201: Information Exposure Through Sent Data"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/201.html",
+              "properties": {
+                "category": "taint",
+                "tags": [
+                  "taint"
+                ]
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "level": "error",
+          "rank": 5,
+          "message": {
+            "text": "<span>This call to child_process.spawn() contains a command injection flaw.  The argument to the function is constructed using untrusted input.  If an attacker is allowed to specify all or part of the command, it may be possible to execute commands on the server with the privileges of the executing process.  The level of exposure depends on the effectiveness of input validation routines, if any. </span> <span>Validate all untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.  When using blocklists, be sure that the sanitizing routine performs a sufficient number of iterations to remove all instances of disallowed characters.  Most APIs that execute system commands also have a \"safe\" version of the method that takes an array of strings as input rather than a single string, which protects against some forms of command injection.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/78.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Command_Injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/OS-Commanding\">WASC</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/optimizer/Optimizer.js"
+                },
+                "region": {
+                  "startLine": 24
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.spawnProcess.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "child_process.spawn",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "78",
+          "fingerprints": {
+            "flawHash": "595050764",
+            "causeHash": "1398380652",
+            "procedureHash": "712070401",
+            "prototypeHash": "1132923293"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to http.ServerResponse.write() contains a cross-site scripting (XSS) flaw.  The application populates the HTTP response with untrusted input, allowing an attacker to embed malicious content, such as Javascript code, which will be executed in the context of the victim's browser.  XSS vulnerabilities are commonly exploited to steal or manipulate cookies, modify presentation of content, and compromise confidential information, with new attack vectors being discovered on a regular basis. </span> <span>Use contextual escaping on all untrusted data before using it to construct any portion of an HTTP response.  The escaping method should be chosen based on the specific use case of the untrusted data, otherwise it may not protect fully against the attack. For example, if the data is being written to the body of an HTML page, use HTML entity escaping; if the data is being written to an attribute, use attribute escaping; etc.  Both the OWASP Java Encoder library and the Microsoft AntiXSS library provide contextual escaping methods. For more details on contextual escaping, see https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md. In addition, as a best practice, always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/79.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/XSS\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Cross-Site-Scripting\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "scripts/update-command.js"
+                },
+                "region": {
+                  "startLine": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!main",
+                  "fullyQualifiedName": "!main",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "http.ServerResponse.write",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "80",
+          "fingerprints": {
+            "flawHash/v1": "4167229899",
+            "causeHash/v2": "691645020",
+            "procedureHash": "2339204533",
+            "prototypeHash": "211846691"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to http.ServerResponse.write() contains a cross-site scripting (XSS) flaw.  The application populates the HTTP response with untrusted input, allowing an attacker to embed malicious content, such as Javascript code, which will be executed in the context of the victim's browser.  XSS vulnerabilities are commonly exploited to steal or manipulate cookies, modify presentation of content, and compromise confidential information, with new attack vectors being discovered on a regular basis. </span> <span>Use contextual escaping on all untrusted data before using it to construct any portion of an HTTP response.  The escaping method should be chosen based on the specific use case of the untrusted data, otherwise it may not protect fully against the attack. For example, if the data is being written to the body of an HTML page, use HTML entity escaping; if the data is being written to an attribute, use attribute escaping; etc.  Both the OWASP Java Encoder library and the Microsoft AntiXSS library provide contextual escaping methods. For more details on contextual escaping, see https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md. In addition, as a best practice, always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/79.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/XSS\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Cross-Site-Scripting\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "scripts/deploy-command.js"
+                },
+                "region": {
+                  "startLine": 41
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!main",
+                  "fullyQualifiedName": "!main",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "http.ServerResponse.write",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "80",
+          "fingerprints": {
+            "flawHash/v2": "4167229899",
+            "causeHash/v1": "691645020",
+            "procedureHash": "941859322",
+            "prototypeHash": "211846691"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/ImageResizer.js"
+                },
+                "region": {
+                  "startLine": 42
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.exec.!func.!lambda6.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "1173973316",
+            "causeHash": "2638186600",
+            "procedureHash": "3425369783",
+            "prototypeHash": "981161722"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/ImageReducer.js"
+                },
+                "region": {
+                  "startLine": 65
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.createReduceProcessList.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "2268178203",
+            "causeHash": "1464095379",
+            "procedureHash": "3324108922",
+            "prototypeHash": "967779305"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/ImageProcessor.js"
+                },
+                "region": {
+                  "startLine": 31
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.run.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "3103718343",
+            "causeHash": "2323626286",
+            "procedureHash": "355247331",
+            "prototypeHash": "1754456356"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/ImageData.js"
+                },
+                "region": {
+                  "startLine": 190
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.combineWithDirectory.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "2538770835",
+            "causeHash": "132349939",
+            "procedureHash": "1292937138",
+            "prototypeHash": "3739485724"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/ImageArchiver.js"
+                },
+                "region": {
+                  "startLine": 29
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.exec.!func.!lambda1.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "293154718",
+            "causeHash": "710950814",
+            "procedureHash": "3845021501",
+            "prototypeHash": "2461579846"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib/EventParser.js"
+                },
+                "region": {
+                  "startLine": 9
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.parseEvent.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "3132762339",
+            "causeHash": "1176028798",
+            "procedureHash": "226815316",
+            "prototypeHash": "1759249738"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "index.js"
+                },
+                "region": {
+                  "startLine": 24
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.!lambda1.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "2505134540",
+            "causeHash": "1440745805",
+            "procedureHash": "3709838782",
+            "prototypeHash": "634911230"
+          }
+        },
+        {
+          "level": "warning",
+          "rank": 3,
+          "message": {
+            "text": "<span>This call to console.log() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. </span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://www.owasp.org/index.php/Log_injection\">OWASP</a> <a href=\"https://webappsec.pbworks.com/Improper-Output-Handling\">WASC</a> <a href=\"https://help.veracode.com/reader/4EKhlLSMHm5jC8P8j3XccQ/IiF_rOE79ANbwnZwreSPGA\">Supported Cleansers</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "index.js"
+                },
+                "region": {
+                  "startLine": 38
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!func",
+                  "fullyQualifiedName": "!main.process.!func",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "console.log",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "117",
+          "fingerprints": {
+            "flawHash": "3132762339",
+            "causeHash": "1176028798",
+            "procedureHash": "341957923",
+            "prototypeHash": "1666937942"
+          }
+        },
+        {
+          "level": "note",
+          "rank": 2,
+          "message": {
+            "text": "<span> The application calls the http.ServerResponse.write() function, which will result in data being transferred out of the application (via the network or another medium).  In this case, the message being sent contains local file data.  </span> <span>Ensure that the transfer of the sensitive data is intended and that it does not violate application security policy.  This flaw is categorized as low severity because it only impacts confidentiality, not integrity or availability.  However, in the context of a mobile application, the significance of an information leak may be much greater, especially if misaligned with user expectations or data privacy policies.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/201.html\">CWE</a> <a href=\"https://webappsec.pbworks.com/Information-Leakage\">WASC</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "scripts/update-command.js"
+                },
+                "region": {
+                  "startLine": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!main",
+                  "fullyQualifiedName": "!main",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "http.ServerResponse.write",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "201",
+          "fingerprints": {
+            "flawHash": "4167229899",
+            "causeHash": "691645020",
+            "procedureHash": "2339204533",
+            "prototypeHash": "211846691"
+          }
+        },
+        {
+          "level": "note",
+          "rank": 2,
+          "message": {
+            "text": "<span> The application calls the http.ServerResponse.write() function, which will result in data being transferred out of the application (via the network or another medium).  In this case, the message being sent contains local file data.  </span> <span>Ensure that the transfer of the sensitive data is intended and that it does not violate application security policy.  This flaw is categorized as low severity because it only impacts confidentiality, not integrity or availability.  However, in the context of a mobile application, the significance of an information leak may be much greater, especially if misaligned with user expectations or data privacy policies.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/201.html\">CWE</a> <a href=\"https://webappsec.pbworks.com/Information-Leakage\">WASC</a></span>"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "scripts/deploy-command.js"
+                },
+                "region": {
+                  "startLine": 41
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "!main",
+                  "fullyQualifiedName": "!main",
+                  "kind": "function"
+                },
+                {
+                  "fullyQualifiedName": "http.ServerResponse.write",
+                  "kind": "member",
+                  "parentIndex": 0
+                }
+              ]
+            }
+          ],
+          "ruleId": "201",
+          "fingerprints": {
+            "flawHash": "4167229899",
+            "causeHash": "691645020",
+            "procedureHash": "941859322",
+            "prototypeHash": "211846691"
+          }
+        }
+      ]
+    }
+  ]
+}

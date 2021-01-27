@@ -28,4 +28,4 @@ inputs:
     default: '4:3:0'
 runs:
   using: 'node12'
-  main: 'convert-action.js'
+  main: 'dist/index.js'
