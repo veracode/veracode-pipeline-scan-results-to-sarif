@@ -618,26 +618,42 @@ exports.Converter = Converter;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __importDefault(__nccwpck_require__(186));
+const core = __importStar(__nccwpck_require__(186));
 const index_1 = __nccwpck_require__(144);
 try {
     index_1.run({
-        inputFilename: core_1.default.getInput('pipeline-results-json', { required: true }),
-        outputFilename: core_1.default.getInput('output-results-sarif', { required: true }),
-        ruleLevel: core_1.default.getInput('finding-rule-level'),
+        inputFilename: core.getInput('pipeline-results-json', { required: true }),
+        outputFilename: core.getInput('output-results-sarif', { required: true }),
+        ruleLevel: core.getInput('finding-rule-level'),
         pathReplacers: [
-            core_1.default.getInput('source-base-path-1'),
-            core_1.default.getInput('source-base-path-2'),
-            core_1.default.getInput('source-base-path-3')
+            core.getInput('source-base-path-1'),
+            core.getInput('source-base-path-2'),
+            core.getInput('source-base-path-3')
         ].join(";")
-    }, msg => core_1.default.info(msg));
+    }, msg => core.info(msg));
 }
 catch (error) {
-    core_1.default.setFailed(error.message);
+    core.setFailed(error.message);
 }
 
 
