@@ -3,12 +3,13 @@ import {Converter} from "./Converter";
 import {setupSourceReplacement, sliceReportLevels} from "./utils";
 import * as Sarif from "sarif";
 import {PipelineScanResult} from "./PipelineScanResult";
+import {Options} from "./Options";
 
-export function run(opt: { [key: string]: any }, msgFunc: (msg: string) => void) {
-    const inputFilename: string = opt['input']
-    const outputFilename: string = opt['output']
-    const ruleLevel: string = opt['ruleLevel']
-    const pathReplacers: string = opt['pathReplace']
+export function run(opt: Options, msgFunc: (msg: string) => void) {
+    const inputFilename = opt.inputFilename
+    const outputFilename = opt.outputFilename
+    const ruleLevel = opt.ruleLevel
+    const pathReplacers = opt.pathReplacers
 
     let rawData: Buffer = fs.readFileSync(inputFilename);
     let converter = new Converter({
