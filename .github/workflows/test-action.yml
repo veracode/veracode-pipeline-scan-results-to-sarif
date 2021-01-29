@@ -5,7 +5,8 @@ name: Test SARIF conversion workflow
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - '**'
 
 jobs:
   convert_to_sarif:
