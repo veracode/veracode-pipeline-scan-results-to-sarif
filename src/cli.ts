@@ -12,7 +12,13 @@ program
     .parse(process.argv)
 
 try {
-    run(program.opts(), msg => console.log(msg))
+    let opts = program.opts()
+    run({
+        inputFilename: opts["input"],
+        outputFilename: opts["output"],
+        ruleLevel: opts["ruleLevel"],
+        pathReplacers: opts["pathReplace"],
+    }, msg => console.log(msg))
 } catch (error) {
     console.error(error.message);
 }
