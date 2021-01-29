@@ -672,10 +672,10 @@ const fs_1 = __importDefault(__nccwpck_require__(747));
 const Converter_1 = __nccwpck_require__(716);
 const utils_1 = __nccwpck_require__(314);
 function run(opt, msgFunc) {
-    const inputFilename = opt['input'];
-    const outputFilename = opt['output'];
-    const ruleLevel = opt['ruleLevel'];
-    const pathReplacers = opt['pathReplace'];
+    const inputFilename = opt.inputFilename;
+    const outputFilename = opt.outputFilename;
+    const ruleLevel = opt.ruleLevel;
+    const pathReplacers = opt.pathReplacers;
     let rawData = fs_1.default.readFileSync(inputFilename);
     let converter = new Converter_1.Converter({
         replacers: utils_1.setupSourceReplacement(...pathReplacers.split(";")),
