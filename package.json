@@ -7,7 +7,11 @@
     "dev": "ts-node ./src/cli.ts",
     "clean": "rimraf ./dist/",
     "build": "npm run clean && ncc build ./src/action.ts --license license",
-    "test": "ava --verbose"
+    "test": "ava --verbose",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "lodash": "4.17.21"
   },
   "devDependencies": {
     "@types/node": "^14.14.21",
