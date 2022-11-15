@@ -2,11 +2,11 @@
 
 This action has a workflow which initiates a Veracode Static Analyis Pipeline Scan and takes the Veracode pipeline scan JSON result file as an input and transforms it to a SARIF format.
 
-Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See [details for the other pipeline scan attributes](https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/zjaZE08bAYZVPBWWbgmZvw).
+Add the `-jo true` to your Pipeline Scan command to generate the JSON result file. See [details for the other pipeline scan attributes](https://docs.veracode.com/r/r_pipeline_scan_commands).
 
 If your GitHub account allows code scanning alerts, you can then upload the `sarif` file to show the scan findings.
 
-See [Veracode pipeline scan example in GitHub action](https://help.veracode.com/go/c_about_github).
+See [Veracode pipeline scan example in GitHub action](https://docs.veracode.com/go/c_about_github).
 
 ---
 
@@ -56,7 +56,7 @@ Example values:
     steps:
       - name: Convert pipeline scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.7
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
