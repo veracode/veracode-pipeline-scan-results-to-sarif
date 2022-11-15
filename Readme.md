@@ -56,7 +56,7 @@ Example values:
     steps:
       - name: Convert pipeline scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.7
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
