@@ -49,18 +49,23 @@ Example values:
 ## Example usage
 
 ```yaml
-- name: Convert pipeline scan output to SARIF format
-  id: convert
-  uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.2
-  with:
-    pipeline-results-json: results.json
-    output-results-sarif: veracode-results.sarif
-    source-base-path-1: "^com/veracode:src/main/java/com/veracode"
-    source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-    finding-rule-level: "3:1:0"
+  results_to_sarif:
+    needs: pipeline_scan
+    runs-on: ubuntu-latest
+    name: import pipeline results to sarif
+    steps:
+      - name: Convert pipeline scan output to SARIF format
+        id: convert
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v0.1.7
+        with:
+          pipeline-results-json: results.json
+          output-results-sarif: veracode-results.sarif
+          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
+          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
+          finding-rule-level: "3:1:0"
 
-- name: upload sarif file to repository
-  uses: github/codeql-action/upload-sarif@v1
-  with: # Path to SARIF file relative to the root of the repository
-    sarif_file: veracode-results.sarif
+      - name: upload sarif file to repository
+        uses: github/codeql-action/upload-sarif@v2
+        with: # Path to SARIF file relative to the root of the repository
+          sarif_file: veracode-results.sarif
  ```
