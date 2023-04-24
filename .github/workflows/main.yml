@@ -26,11 +26,10 @@ jobs:
       with:
         repository: ''
 
-    - uses: papeloto/action-zip@v1
-      with:
-        files: /
-        recursive: true
-        dest: veracode-pipeline-scan-results-to-sarif.zip
+    - name: Zip Project
+      run: zip -R veracode-pipeline-scan-results-to-sarif.zip *.*'
+      env:
+        build-name: veracode-pipeline-scan-results-to-sarif.zip
           
     - uses: actions/upload-artifact@v1
       with:
