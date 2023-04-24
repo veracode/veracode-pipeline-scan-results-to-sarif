@@ -22,16 +22,16 @@ jobs:
     steps:
     
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it and copies all sources into ZIP file for submitting for analysis. Replace this section with your applications build steps
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: ''
 
     - name: Zip Project
-      run: zip -R veracode-pipeline-scan-results-to-sarif.zip *.*'
+      run: zip -R veracode-pipeline-scan-results-to-sarif.zip '*.*'
       env:
         build-name: veracode-pipeline-scan-results-to-sarif.zip
           
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: my-artifact
         path: veracode-pipeline-scan-results-to-sarif.zip
