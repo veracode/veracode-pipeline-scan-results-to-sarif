@@ -6,7 +6,7 @@ Add the `-jo true` to your Pipeline Scan command to generate the JSON result fil
 
 If your GitHub account allows code scanning alerts, you can then upload the `sarif` file to show the scan findings.
 
-See [Veracode pipeline scan example in GitHub action](https://docs.veracode.com/go/c_about_github).
+See [Veracode pipeline scan example in GitHub action](https://docs.veracode.com/r/Github_Pipeline_Scan_Examples).
 
 ---
 
