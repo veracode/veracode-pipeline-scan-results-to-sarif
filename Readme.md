@@ -6,7 +6,9 @@ Add the `-jo true` to your Pipeline Scan command to generate the JSON result fil
 
 If your GitHub account allows code scanning alerts, you can then upload the `sarif` file to show the scan findings.
 
-See [Veracode pipeline scan example in GitHub action](https://docs.veracode.com/go/c_about_github).
+Run a pipeline scan of your application code within your GitHub development pipeline. The action also converts the scan results to a Static Analysis Results Interchange Format (SARIF) file and imports them as code-scanning alerts. To view the scan results, in your GitHub project, select Security > Code scanning alerts.
+
+To configure this action, edit the settings in the provided /workflows/main.yml file. For example, if you do not want the action to convert the scan results from JSON format to SARIF format and import them into GitHub, you can remove or comment out those settings.
 
 ---
 
