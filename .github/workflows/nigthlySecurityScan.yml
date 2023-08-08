@@ -1,0 +1,43 @@
+name: Veracode Security Scan
+
+on: 
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: 0 4 * * *
+  workflow_dispatch:
+
+jobs:
+  veracode-sca-task:
+    runs-on: ubuntu-latest
+    name: Veracode SCA scan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Veracode SCA
+        env:
+          SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+        uses: veracode/veracode-sca@v2.1.9
+
+  veracode-sast-task:
+    runs-on: ubuntu-latest
+    name: Veracode SAST policy scan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: create new package-lock.json
+        run: npm install
+      - name: ZIP source folder
+        run: zip -r app.zip src package-lock.json
+      - name: Run Veracode Policy scan
+        uses: veracode/veracode-uploadandscan-action@0.2.6
+        with:
+          appname: 'GitHub Pipeline Scan to Sarif Action'
+          createprofile: false
+          filepath: 'app.zip'
+          scantimeout: 30
+          vid: '${{ secrets.API_ID }}'
+          vkey: '${{ secrets.API_KEY }}'
