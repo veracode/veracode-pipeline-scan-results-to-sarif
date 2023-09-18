@@ -7,7 +7,7 @@ import {
 } from "./PipelineScanResult";
 import * as Sarif from 'sarif';
 import {ConversionConfig} from "./ConversionConfig";
-import {getFilePath} from "./utils";
+import {getFilePath, mapVeracodeSeverityToCVSS} from "./utils";
 import {Location, LogicalLocation, Result} from "sarif";
 
 export class Converter {
@@ -19,7 +19,7 @@ export class Converter {
         this.msgFunc = msgFunc
     }
 
-    convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
+    public convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
         if (pipelineScanResult.scan_status !== "SUCCESS") {
@@ -79,7 +79,8 @@ export class Converter {
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
                 category: issue.issue_type_id,
-                tags: [issue.issue_type_id]
+                tags: [issue.issue_type_id],
+                "security-severity": mapVeracodeSeverityToCVSS(issue.severity)
             },
             defaultConfiguration: {
                 level: this.config.reportLevels.get(issue.severity)
@@ -138,7 +139,7 @@ export class Converter {
         };
     }
 
-    convertSarifLog(sarifLog: Sarif.Log): PipelineScanResult {
+    public convertSarifLog(sarifLog: Sarif.Log): PipelineScanResult {
         let issues: Issue[] = sarifLog.runs
             // flatmap results
             .map(run => run.results)
