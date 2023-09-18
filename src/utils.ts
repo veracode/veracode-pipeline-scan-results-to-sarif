@@ -50,30 +50,30 @@ export const sliceReportLevels = (requestedLevels: string): Map<number, Reportin
     return levels;
 }
 
-export const mapVeracodeSeverityToCVSS = (severity: number): number => {
+export const mapVeracodeSeverityToCVSS = (severity: number): string => {
     // https://docs.veracode.com/r/review_severity_exploitability#veracode-finding-severities
     // https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels
     switch (severity) {
         // Veracode Very High, GitHub Critical
         case 5:
-            return 9.0;
+            return "9.0";
         // Veracode High, GitHub High
         case 4:
-            return 7.0;
+            return "7.0";
         // Veracode Medium, GitHub Medium
         case 3:
-            return 4.0;
+            return "4.0";
         // Veracode Low, GitHub Low
         case 2:
-            return 0.1;
+            return "0.1";
         // Veracode Very Low, GitHub Low - not a perfect mapping but this can't be GitHub None as that maps to Veracode Informational
         case 1:
-            return 0.1
+            return "0.1"
         // Veracode Informational, GitHub None
         case 0:
-            return 0.0
+            return "0.0"
         default:
-            return 0.0;
+            return "0.0";
     }
 }
 
