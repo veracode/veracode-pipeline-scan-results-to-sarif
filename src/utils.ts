@@ -1,5 +1,6 @@
 import {ReportingConfiguration} from "sarif";
 import {PathReplacer} from "./ConversionConfig";
+import * as core from '@actions/core'
 
 export const setupSourceReplacement = (...subs: string[]): PathReplacer[] => {
     return subs

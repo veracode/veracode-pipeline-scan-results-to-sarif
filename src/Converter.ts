@@ -13,12 +13,15 @@ import {Location, LogicalLocation, Result} from "sarif";
 export class Converter {
     private config: ConversionConfig
     private readonly msgFunc: (msg: string) => void
+    
 
     constructor(conversionConfig: ConversionConfig, msgFunc: (msg: string) => void) {
         this.config = conversionConfig
         this.msgFunc = msgFunc
     }
 
+    
+    
     convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
@@ -39,6 +42,7 @@ export class Converter {
         // convert to SARIF json
         let sarifResults: Sarif.Result[] = pipelineScanResult.findings
             .map(issue => this.issueToResult(issue));
+
         // construct the full SARIF content
         return {
             $schema: "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",

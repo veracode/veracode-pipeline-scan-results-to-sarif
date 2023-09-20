@@ -34,6 +34,13 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
 
 ### `finding-rule-level`
 
+**WARNING  
+The 'finding-rule-level' input is deprecated and will be removed in a future release.  
+It will be overwritten witten with 4:3:0  
+This setting is not needed anymore as GitHub as introduced granular control over the severity of findings  
+Please find more informarion here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels**  
+  
+  
 **Optional** The conversion rule from Veracode finding levels to Github levels.
 
 - **Veracode levels**: 5 = `Very High`, 4 = `High`, 3 = `Medium`, 2 = `Low`, 1 = `Very Low`, 0 = `informational`.
@@ -58,13 +65,12 @@ Example values:
     steps:
       - name: Convert pipeline scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.6
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
           source-base-path-1: "^com/veracode:src/main/java/com/veracode"
           source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-          finding-rule-level: "3:1:0"
 
       - name: upload sarif file to repository
         uses: github/codeql-action/upload-sarif@v2

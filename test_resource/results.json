@@ -1,0 +1,299 @@
+{
+   "_links": {
+      "root": {
+         "href": "/"
+      },
+      "self": {
+         "href": "/scans/319a4948-913e-4c86-a16b-08a7c142bfb4/findings"
+      },
+      "help": {
+         "href": "https://help.veracode.com/reader/tS9CaFwL4_lbIEWWomsJoA/ovfZGgu96UINQxIuTqRDwg"
+      }
+   },
+   "scan_id": "319a4948-913e-4c86-a16b-08a7c142bfb4",
+   "scan_status": "SUCCESS",
+   "message": "Scan successful. Results size: 10985 bytes",
+   "modules": [
+      "SQLvulnerability.class"
+   ],
+   "modules_count": 1,
+   "findings": [
+      {
+         "title": "java.sql.Statement.executeQuery",
+         "issue_id": 1000,
+         "gob": "B",
+         "severity": 4,
+         "issue_type_id": "taint",
+         "issue_type": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+         "cwe_id": "89",
+         "display_text": "<span>This database query contains a SQL injection flaw.  The call to java.sql.Statement.executeQuery() constructs a dynamic SQL query using a variable derived from untrusted input.  An attacker could exploit this flaw to execute arbitrary SQL queries against the database. The first argument to executeQuery() contains tainted data. The tainted data originated from an earlier call to SQLvulnerability.main.</span> <span>Avoid dynamically constructing SQL queries.  Instead, use parameterized prepared statements to prevent the database from interpreting the contents of bind variables as part of the query.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/89.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/SQL_Injection\">OWASP</a></span>",
+         "files": {
+            "source_file": {
+               "file": "SQLvulnerability.java",
+               "line": 21,
+               "function_name": "main",
+               "qualified_function_name": "SQLvulnerability.main",
+               "function_prototype": "void main(java.lang.String  [])",
+               "scope": "SQLvulnerability"
+            }
+         },
+         "flaw_match": {
+            "procedure_hash": "1093809001",
+            "prototype_hash": "3964753467",
+            "flaw_hash": "1823420291",
+            "flaw_hash_count": 1,
+            "flaw_hash_ordinal": 1,
+            "cause_hash": "3589143651",
+            "cause_hash_count": 1,
+            "cause_hash_ordinal": 1,
+            "cause_hash2": "4194732763",
+            "cause_hash2_ordinal": "1"
+         },
+         "stack_dumps": {
+            "stack_dump": [
+               {
+                  "Frame": [
+                     {
+                        "FrameId": "0",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "20",
+                        "SourceFileId": "1",
+                        "VarNames": "!jdk11_concat(\"SELECT * FROM table WHERE name = '\\u0001';\", /**X-VC scoperef targetid=\"28860\" */s/**X-VC /scoperef */.next())",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "62",
+                        "Comment": "Start taint trace"
+                     },
+                     {
+                        "FrameId": "1",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "20",
+                        "SourceFileId": "1",
+                        "VarNames": "/**X-VC scoperef targetid=\"28860\" */s/**X-VC /scoperef */.next()",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "62",
+                        "Comment": {}
+                     },
+                     {
+                        "FrameId": "2",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "19",
+                        "SourceFileId": "1",
+                        "VarNames": "/**X-VC scoperef targetid=\"18254\" */java.lang.System.in/**X-VC /scoperef */",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "48",
+                        "Comment": {}
+                     }
+                  ]
+               }
+            ]
+         },
+         "flaw_details_link": "https://downloads.veracode.com/securityscan/cwe/v4/java/89.html"
+      },
+      {
+         "title": "java.sql.DriverManager.getConnection",
+         "issue_id": 1002,
+         "gob": "B",
+         "severity": 3,
+         "issue_type_id": "reliability",
+         "issue_type": "Use of Hard-coded Password",
+         "cwe_id": "259",
+         "display_text": "<span>This variable assignment uses a hard-coded password that may compromise system security in a way that cannot be easily remedied.  The use of a hard-coded password significantly increases the possibility that the account being protected will be compromised.  Moreover, the password cannot be changed without patching the software.  If a hard-coded password is compromised in a commercial product, all deployed instances may be vulnerable to attack.  In some cases, this finding may indicate a reference to a password (e.g. the name of a key in a properties file) rather than an actual password. java.sql.DriverManager.getConnection</span> <span>Store passwords out-of-band from the application code.  Follow best practices for protecting credentials stored in locations such as configuration or properties files. An HSM may be appropriate for particularly sensitive credentials.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/259.html\">CWE</a></span>",
+         "files": {
+            "source_file": {
+               "file": "SQLvulnerability.java",
+               "line": 16,
+               "function_name": "main",
+               "qualified_function_name": "SQLvulnerability.main",
+               "function_prototype": "void main(java.lang.String  [])",
+               "scope": "SQLvulnerability"
+            }
+         },
+         "flaw_match": {
+            "procedure_hash": "1093809001",
+            "prototype_hash": "3964753467",
+            "flaw_hash": "549825730",
+            "flaw_hash_count": 1,
+            "flaw_hash_ordinal": 1,
+            "cause_hash": "119361934",
+            "cause_hash_count": 1,
+            "cause_hash_ordinal": 1,
+            "cause_hash2": "0",
+            "cause_hash2_ordinal": "0"
+         },
+         "stack_dumps": {
+            "stack_dump": [
+               {
+                  "Frame": [
+                     {
+                        "FrameId": "0",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "15",
+                        "SourceFileId": "1"
+                     }
+                  ]
+               }
+            ]
+         },
+         "flaw_details_link": "https://downloads.veracode.com/securityscan/cwe/v4/java/259.html"
+      },
+      {
+         "title": "java.util.logging.Logger.info",
+         "issue_id": 1004,
+         "gob": "B",
+         "severity": 3,
+         "issue_type_id": "taint",
+         "issue_type": "Improper Output Neutralization for Logs",
+         "cwe_id": "117",
+         "display_text": "<span>This call to java.util.logging.Logger.info() could result in a log forging attack.  Writing untrusted data into a log file allows an attacker to forge log entries or inject malicious content into log files.  Corrupted log files can be used to cover an attacker's tracks or as a delivery mechanism for an attack on a log viewing or processing utility.  For example, if a web administrator uses a browser-based utility to review logs, a cross-site scripting attack might be possible. The first argument to info() contains tainted data. The tainted data originated from an earlier call to SQLvulnerability.main.</span> <span>Avoid directly embedding user input in log files when possible.  Sanitize untrusted data used to construct log entries by using a safe logging mechanism such as the OWASP ESAPI Logger, which will automatically remove unexpected carriage returns and line feeds and can be configured to use HTML entity encoding for non-alphanumeric data.  Alternatively, some of the XSS escaping functions from the OWASP Java Encoder project will also sanitize CRLF sequences.  Only create a custom blocklist when absolutely necessary.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/117.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/Log_Injection\">OWASP</a> <a href=\"https://docs.veracode.com/r/review_cleansers?tocId=nYnZqAenFFZmB75MQrZwuA\">Supported Cleansers</a></span>",
+         "files": {
+            "source_file": {
+               "file": "SQLvulnerability.java",
+               "line": 23,
+               "function_name": "main",
+               "qualified_function_name": "SQLvulnerability.main",
+               "function_prototype": "void main(java.lang.String  [])",
+               "scope": "SQLvulnerability"
+            }
+         },
+         "flaw_match": {
+            "procedure_hash": "1093809001",
+            "prototype_hash": "3964753467",
+            "flaw_hash": "1526863843",
+            "flaw_hash_count": 1,
+            "flaw_hash_ordinal": 1,
+            "cause_hash": "1933415909",
+            "cause_hash_count": 1,
+            "cause_hash_ordinal": 1,
+            "cause_hash2": "1936596591",
+            "cause_hash2_ordinal": "1"
+         },
+         "stack_dumps": {
+            "stack_dump": [
+               {
+                  "Frame": [
+                     {
+                        "FrameId": "0",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "22",
+                        "SourceFileId": "1",
+                        "VarNames": "!jdk11_concat(\"Logging an INFO-level message\\u0001\", /**X-VC scoperef targetid=\"28860\" */s/**X-VC /scoperef */.next())",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "94",
+                        "Comment": "Start taint trace"
+                     },
+                     {
+                        "FrameId": "1",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "22",
+                        "SourceFileId": "1",
+                        "VarNames": "/**X-VC scoperef targetid=\"28860\" */s/**X-VC /scoperef */.next()",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "94",
+                        "Comment": {}
+                     },
+                     {
+                        "FrameId": "2",
+                        "FunctionName": "main",
+                        "SourceFile": "SQLvulnerability.java",
+                        "SourceLine": "19",
+                        "SourceFileId": "1",
+                        "VarNames": "/**X-VC scoperef targetid=\"18254\" */java.lang.System.in/**X-VC /scoperef */",
+                        "QualifiedFunctionName": "SQLvulnerability.main",
+                        "FunctionPrototype": "void main(java.lang.String  [])",
+                        "Scope": "SQLvulnerability",
+                        "RelativeLocation": "48",
+                        "Comment": {}
+                     }
+                  ]
+               }
+            ]
+         },
+         "flaw_details_link": "https://downloads.veracode.com/securityscan/cwe/v4/java/117.html"
+      },
+      {
+         "title": "java.sql.Connection.createStatement",
+         "issue_id": 1003,
+         "gob": "B",
+         "severity": 0,
+         "issue_type_id": "reliability",
+         "issue_type": "Improper Resource Shutdown or Release",
+         "cwe_id": "404",
+         "display_text": "<span>The program fails to release or incorrectly releases the variable stmt, which was previously allocated by a call to java.sql.Connection.createStatement().</span> <span>Ensure that all code paths properly release this resource.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/404.html\">CWE</a></span>",
+         "files": {
+            "source_file": {
+               "file": "SQLvulnerability.java",
+               "line": 19,
+               "function_name": "main",
+               "qualified_function_name": "SQLvulnerability.main",
+               "function_prototype": "void main(java.lang.String  [])",
+               "scope": "SQLvulnerability"
+            }
+         },
+         "flaw_match": {
+            "procedure_hash": "1093809001",
+            "prototype_hash": "3964753467",
+            "flaw_hash": "1480817290",
+            "flaw_hash_count": 2,
+            "flaw_hash_ordinal": 1,
+            "cause_hash": "2866949028",
+            "cause_hash_count": 1,
+            "cause_hash_ordinal": 1,
+            "cause_hash2": "0",
+            "cause_hash2_ordinal": "0"
+         },
+         "stack_dumps": {},
+         "flaw_details_link": "https://downloads.veracode.com/securityscan/cwe/v4/java/404.html"
+      },
+      {
+         "title": "java.sql.Statement.executeQuery",
+         "issue_id": 1001,
+         "gob": "B",
+         "severity": 0,
+         "issue_type_id": "reliability",
+         "issue_type": "Improper Resource Shutdown or Release",
+         "cwe_id": "404",
+         "display_text": "<span>The program fails to release or incorrectly releases the variable main, which was previously allocated by a call to java.sql.Statement.executeQuery().</span> <span>Ensure that all code paths properly release this resource.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/404.html\">CWE</a></span>",
+         "files": {
+            "source_file": {
+               "file": "SQLvulnerability.java",
+               "line": 21,
+               "function_name": "main",
+               "qualified_function_name": "SQLvulnerability.main",
+               "function_prototype": "void main(java.lang.String  [])",
+               "scope": "SQLvulnerability"
+            }
+         },
+         "flaw_match": {
+            "procedure_hash": "1093809001",
+            "prototype_hash": "3964753467",
+            "flaw_hash": "1823420291",
+            "flaw_hash_count": 1,
+            "flaw_hash_ordinal": 1,
+            "cause_hash": "3589143651",
+            "cause_hash_count": 1,
+            "cause_hash_ordinal": 1,
+            "cause_hash2": "0",
+            "cause_hash2_ordinal": "0"
+         },
+         "stack_dumps": {},
+         "flaw_details_link": "https://downloads.veracode.com/securityscan/cwe/v4/java/404.html"
+      }
+   ],
+   "selected_modules": []
+}
