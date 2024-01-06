@@ -2809,6 +2809,7 @@ class Converter {
             console.log("issue.flaw_match is defined");
             let flawMatch = issue.flaw_match;
         }
+        console.log("flawMatch: " + JSON.stringify(flawMatch));
         let fingerprints = {
             flawHash: flawMatch.flaw_hash,
             flawHashCount: flawMatch.flaw_hash_count.toString(),
