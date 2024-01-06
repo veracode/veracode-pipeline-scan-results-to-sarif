@@ -118,7 +118,6 @@ export class Converter {
         }
         var flawMatch: FlawMatch
         if ( issue.flaw_match === undefined ) {
-            console.log("issue.flaw_match is undefined")
             var flawMatch: FlawMatch = {
                 flaw_hash: "",
                 flaw_hash_count: 0,
@@ -131,11 +130,9 @@ export class Converter {
             } 
         }
         else {
-            console.log("issue.flaw_match is defined")
             var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
         }
 
-        console.log("flawMatch: " + JSON.stringify(flawMatch))
         
         let fingerprints: { [key: string]: string } = {
             flawHash: flawMatch.flaw_hash,
@@ -147,7 +144,6 @@ export class Converter {
             procedureHash: flawMatch.procedure_hash,
             prototypeHash: flawMatch.prototype_hash,
         }
-        console.log("fingerprints: " + JSON.stringify(fingerprints))
 
         // construct the issue
         return {

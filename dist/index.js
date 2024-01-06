@@ -2794,7 +2794,6 @@ class Converter {
         };
         var flawMatch;
         if (issue.flaw_match === undefined) {
-            console.log("issue.flaw_match is undefined");
             var flawMatch = {
                 flaw_hash: "",
                 flaw_hash_count: 0,
@@ -2807,10 +2806,8 @@ class Converter {
             };
         }
         else {
-            console.log("issue.flaw_match is defined");
             var flawMatch = issue.flaw_match;
         }
-        console.log("flawMatch: " + JSON.stringify(flawMatch));
         let fingerprints = {
             flawHash: flawMatch.flaw_hash,
             flawHashCount: flawMatch.flaw_hash_count.toString(),
@@ -2821,7 +2818,6 @@ class Converter {
             procedureHash: flawMatch.procedure_hash,
             prototypeHash: flawMatch.prototype_hash,
         };
-        console.log("fingerprints: " + JSON.stringify(fingerprints));
         // construct the issue
         return {
             // get the severity number to name
