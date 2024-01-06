@@ -65,7 +65,7 @@ Example values:
     steps:
       - name: Convert pipeline scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.6
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.7
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
@@ -77,3 +77,5 @@ Example values:
         with: # Path to SARIF file relative to the root of the repository
           sarif_file: veracode-results.sarif
  ```
+## Build the package on your own
+``` ncc build src/action.ts```

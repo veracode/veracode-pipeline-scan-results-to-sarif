@@ -2792,7 +2792,22 @@ class Converter {
                 }
             ]
         };
-        let flawMatch = issue.flaw_match;
+        var flawMatch;
+        if (issue.flaw_match === undefined) {
+            var flawMatch = {
+                flaw_hash: "",
+                flaw_hash_count: 0,
+                flaw_hash_ordinal: 0,
+                cause_hash: "",
+                cause_hash_count: 0,
+                cause_hash_ordinal: 0,
+                procedure_hash: "",
+                prototype_hash: "",
+            };
+        }
+        else {
+            var flawMatch = issue.flaw_match;
+        }
         let fingerprints = {
             flawHash: flawMatch.flaw_hash,
             flawHashCount: flawMatch.flaw_hash_count.toString(),
@@ -2801,7 +2816,7 @@ class Converter {
             causeHashCount: flawMatch.cause_hash_count.toString(),
             causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
             procedureHash: flawMatch.procedure_hash,
-            prototypeHash: flawMatch.prototype_hash
+            prototypeHash: flawMatch.prototype_hash,
         };
         // construct the issue
         return {
@@ -3008,9 +3023,9 @@ function run(opt, msgFunc) {
         core.info("WARNING");
         core.info("##################");
         core.info("The 'finding-rule-level' input is deprecated and will be removed in a future release.");
-        core.info("It will be overwritten witten with 4:3:0");
+        core.info("It will be overwritten with with 4:3:0");
         core.info("This setting is not needed anymore as GitHub as introduced granular control over the severity of findings");
-        core.info("Please find more informarion here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels");
+        core.info("Please find more information here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels");
         core.info("##################");
     }
     let rawData = fs_1.default.readFileSync(inputFilename);

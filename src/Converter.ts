@@ -116,7 +116,24 @@ export class Converter {
                 }
             ]
         }
-        let flawMatch: FlawMatch = issue.flaw_match as FlawMatch
+        var flawMatch: FlawMatch
+        if ( issue.flaw_match === undefined ) {
+            var flawMatch: FlawMatch = {
+                flaw_hash: "",
+                flaw_hash_count: 0,
+                flaw_hash_ordinal: 0,
+                cause_hash: "",
+                cause_hash_count: 0,
+                cause_hash_ordinal: 0,
+                procedure_hash: "",
+                prototype_hash: "",
+            } 
+        }
+        else {
+            var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
+        }
+
+        
         let fingerprints: { [key: string]: string } = {
             flawHash: flawMatch.flaw_hash,
             flawHashCount: flawMatch.flaw_hash_count.toString(),
@@ -125,7 +142,7 @@ export class Converter {
             causeHashCount: flawMatch.cause_hash_count.toString(),
             causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
             procedureHash: flawMatch.procedure_hash,
-            prototypeHash: flawMatch.prototype_hash
+            prototypeHash: flawMatch.prototype_hash,
         }
 
         // construct the issue
