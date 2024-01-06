@@ -134,14 +134,14 @@ export class Converter {
         }
         
         let fingerprints: { [key: string]: string } = {
-            flawHash: flawMatch.flaw_hash ?? "",
-            flawHashCount: flawMatch.flaw_hash_count.toString() ?? "",
-            flawHashOrdinal: flawMatch.flaw_hash_ordinal.toString() ?? "",
-            causeHash: flawMatch.cause_hash ?? "",
-            causeHashCount: flawMatch.cause_hash_count.toString() ?? "",
-            causeHashOrdinal: flawMatch.cause_hash_ordinal.toString() ?? "",
-            procedureHash: flawMatch.procedure_hash ?? "",
-            prototypeHash: flawMatch.prototype_hash ?? "",
+            flawHash: flawMatch.flaw_hash,
+            flawHashCount: flawMatch.flaw_hash_count.toString(),
+            flawHashOrdinal: flawMatch.flaw_hash_ordinal.toString(),
+            causeHash: flawMatch.cause_hash,
+            causeHashCount: flawMatch.cause_hash_count.toString(),
+            causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
+            procedureHash: flawMatch.procedure_hash,
+            prototypeHash: flawMatch.prototype_hash,
         }
 
         // construct the issue

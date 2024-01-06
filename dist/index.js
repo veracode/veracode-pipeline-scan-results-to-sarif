@@ -2767,7 +2767,6 @@ class Converter {
         };
     }
     issueToResult(issue) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
         let sourceFile = issue.files.source_file;
         // construct flaw location
         let location = {
@@ -2809,14 +2808,14 @@ class Converter {
             let flawMatch = issue.flaw_match;
         }
         let fingerprints = {
-            flawHash: (_a = flawMatch.flaw_hash) !== null && _a !== void 0 ? _a : "",
-            flawHashCount: (_b = flawMatch.flaw_hash_count.toString()) !== null && _b !== void 0 ? _b : "",
-            flawHashOrdinal: (_c = flawMatch.flaw_hash_ordinal.toString()) !== null && _c !== void 0 ? _c : "",
-            causeHash: (_d = flawMatch.cause_hash) !== null && _d !== void 0 ? _d : "",
-            causeHashCount: (_e = flawMatch.cause_hash_count.toString()) !== null && _e !== void 0 ? _e : "",
-            causeHashOrdinal: (_f = flawMatch.cause_hash_ordinal.toString()) !== null && _f !== void 0 ? _f : "",
-            procedureHash: (_g = flawMatch.procedure_hash) !== null && _g !== void 0 ? _g : "",
-            prototypeHash: (_h = flawMatch.prototype_hash) !== null && _h !== void 0 ? _h : "",
+            flawHash: flawMatch.flaw_hash,
+            flawHashCount: flawMatch.flaw_hash_count.toString(),
+            flawHashOrdinal: flawMatch.flaw_hash_ordinal.toString(),
+            causeHash: flawMatch.cause_hash,
+            causeHashCount: flawMatch.cause_hash_count.toString(),
+            causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
+            procedureHash: flawMatch.procedure_hash,
+            prototypeHash: flawMatch.prototype_hash,
         };
         // construct the issue
         return {
