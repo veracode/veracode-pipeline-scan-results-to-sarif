@@ -119,7 +119,7 @@ export class Converter {
         var flawMatch: FlawMatch
         if ( issue.flaw_match === undefined ) {
             console.log("issue.flaw_match is undefined")
-            let flawMatch: FlawMatch = {
+            var flawMatch: FlawMatch = {
                 flaw_hash: "",
                 flaw_hash_count: 0,
                 flaw_hash_ordinal: 0,
@@ -132,7 +132,7 @@ export class Converter {
         }
         else {
             console.log("issue.flaw_match is defined")
-            let flawMatch: FlawMatch = issue.flaw_match as FlawMatch
+            var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
         }
 
         console.log("flawMatch: " + JSON.stringify(flawMatch))

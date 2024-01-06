@@ -2795,7 +2795,7 @@ class Converter {
         var flawMatch;
         if (issue.flaw_match === undefined) {
             console.log("issue.flaw_match is undefined");
-            let flawMatch = {
+            var flawMatch = {
                 flaw_hash: "",
                 flaw_hash_count: 0,
                 flaw_hash_ordinal: 0,
@@ -2808,7 +2808,7 @@ class Converter {
         }
         else {
             console.log("issue.flaw_match is defined");
-            let flawMatch = issue.flaw_match;
+            var flawMatch = issue.flaw_match;
         }
         console.log("flawMatch: " + JSON.stringify(flawMatch));
         let fingerprints = {
