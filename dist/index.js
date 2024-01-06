@@ -2792,7 +2792,22 @@ class Converter {
                 }
             ]
         };
-        let flawMatch = issue.flaw_match;
+        let flawMatch;
+        if (issue.flaw_match === undefined) {
+            let flawMatch = {
+                flaw_hash: "",
+                flaw_hash_count: 0,
+                flaw_hash_ordinal: 0,
+                cause_hash: "",
+                cause_hash_count: 0,
+                cause_hash_ordinal: 0,
+                procedure_hash: "",
+                prototype_hash: "",
+            };
+        }
+        else {
+            let flawMatch = issue.flaw_match;
+        }
         let fingerprints = {
             flawHash: (_a = flawMatch.flaw_hash) !== null && _a !== void 0 ? _a : "",
             flawHashCount: (_b = flawMatch.flaw_hash_count.toString()) !== null && _b !== void 0 ? _b : "",
