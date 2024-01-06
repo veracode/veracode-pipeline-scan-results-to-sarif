@@ -2792,7 +2792,7 @@ class Converter {
                 }
             ]
         };
-        let flawMatch;
+        var flawMatch;
         if (issue.flaw_match === undefined) {
             console.log("issue.flaw_match is undefined");
             let flawMatch = {

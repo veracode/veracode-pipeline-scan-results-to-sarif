@@ -116,7 +116,7 @@ export class Converter {
                 }
             ]
         }
-        let flawMatch: FlawMatch;
+        var flawMatch: FlawMatch
         if ( issue.flaw_match === undefined ) {
             console.log("issue.flaw_match is undefined")
             let flawMatch: FlawMatch = {
