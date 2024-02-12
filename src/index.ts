@@ -49,7 +49,7 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
 
 async function uploadSARIF(outputFilename:any, opt:any) {
     //upload SARIF
-    await request('PUT /repos/{owner}/{repo}code-scanning/analysis/status', {
+    await request('PUT /repos/{opt.owner}/{opt.repo}code-scanning/analysis/status', {
         headers: {
             authorization: opt.githubToken
         },
