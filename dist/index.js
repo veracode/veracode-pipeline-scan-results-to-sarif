@@ -29329,17 +29329,22 @@ function uploadSARIF(outputFilename, opt) {
                 inputStream.pipe(gzip);
             });
         }
-        const base64Data = createGzipBase64(outputFilename);
-        console.log('Base64 data: ' + base64Data);
-        yield (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
-            headers: {
-                authorization: opt.githubToken
-            },
-            owner: opt.repo_owner,
-            repo: opt.repo_name,
-            ref: opt.ref,
-            commit_sha: opt.commitSHA,
-            sarif: base64Data
+        createGzipBase64(outputFilename)
+            .then((base64Data) => {
+            //const base64Data = createGzipBase64(outputFilename)
+            console.log('Base64 data: ' + base64Data);
+            (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
+                headers: {
+                    authorization: opt.githubToken
+                },
+                owner: opt.repo_owner,
+                repo: opt.repo_name,
+                ref: opt.ref,
+                commit_sha: opt.commitSHA,
+                sarif: base64Data
+            });
+        }).catch((error) => {
+            console.error('Error: ' + error);
         });
     });
 }
