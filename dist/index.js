@@ -29201,7 +29201,7 @@ try {
     (0, index_1.run)({
         inputFilename: core.getInput('pipeline-results-json', { required: true }),
         outputFilename: core.getInput('output-results-sarif', { required: true }),
-        githubToken: core.getInput('github_token', { required: true }),
+        githubToken: core.getInput('githubToken', { required: true }),
         ruleLevel: core.getInput('finding-rule-level'),
         repo_owner: owner,
         repo_name: repo,
