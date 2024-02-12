@@ -53,27 +53,26 @@ async function uploadSARIF(outputFilename:any, opt:any) {
     //upload SARIF
     console.log('opts: '+JSON.stringify(opt))
 
-    let base64Data
     //gzip compress and base64 encode the SARIF file
-    const gzip = createGzip();
-    const inputStream = fs.createReadStream(outputFilename);
-    let compressedData: Buffer[] = [];
+    async function createGzipBase64 (outputFilename:any) {
+        const gzip = createGzip();
+        const inputStream = fs.createReadStream(outputFilename);
+        let compressedData: Buffer[] = [];
 
-    gzip.on('data', (chunk: Buffer) => {
-        compressedData.push(chunk);
-    });
+        gzip.on('data', (chunk: Buffer) => {
+            compressedData.push(chunk);
+        });
 
-    gzip.on('end', () => {
-        const compressedBuffer = Buffer.concat(compressedData);
+        gzip.on('end', () => {
+            const compressedBuffer = Buffer.concat(compressedData);
+            let generatedBase64Data = compressedBuffer.toString('base64');
+            return generatedBase64Data
+        });
+        inputStream.pipe(gzip);
+    }
 
-        // Step 2: Encode the compressed data to base64
-        let base64Data = compressedBuffer.toString('base64');
-        console.log(base64Data);
-    });
-
-    inputStream.pipe(gzip);
-
-
+    const base64Data = createGzipBase64(outputFilename)
+    console.log('Base64 data: '+base64Data);
     await request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
         headers: {
             authorization: opt.githubToken
