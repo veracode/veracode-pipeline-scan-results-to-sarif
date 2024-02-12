@@ -5,6 +5,7 @@ import * as Sarif from "sarif";
 import {PipelineScanResult} from "./PipelineScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
+import { request } from '@octokit/request';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
     const inputFilename = opt.inputFilename
@@ -22,8 +23,6 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
         core.info("Please find more information here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels")
         core.info("##################")
     }
-
-
 
     let rawData: Buffer = fs.readFileSync(inputFilename);
     let converter = new Converter({
@@ -43,4 +42,20 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
     }
     fs.writeFileSync(outputFilename, JSON.stringify(output));
     msgFunc('file created: ' + outputFilename);
+
+    uploadSARIF(outputFilename, opt)
+
+}
+
+async function uploadSARIF(outputFilename:any, opt:any) {
+    //upload SARIF
+    await request('PUT /repos/{owner}/{repo}code-scanning/analysis/status', {
+        headers: {
+            authorization: opt.authToken
+        },
+        owner: opt.owner,
+        repo: opt.repo,
+        data: outputFilename
+    })
+
 }
