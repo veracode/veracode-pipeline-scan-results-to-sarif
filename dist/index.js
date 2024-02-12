@@ -29308,10 +29308,9 @@ function run(opt, msgFunc) {
     uploadSARIF(outputFilename, opt);
 }
 exports.run = run;
+//upload SARIF
 function uploadSARIF(outputFilename, opt) {
     return __awaiter(this, void 0, void 0, function* () {
-        //upload SARIF
-        console.log('opts: ' + JSON.stringify(opt));
         //gzip compress and base64 encode the SARIF file
         function createGzipBase64(outputFilename) {
             return new Promise((resolve, reject) => {
@@ -29330,7 +29329,6 @@ function uploadSARIF(outputFilename, opt) {
             });
         }
         const base64Data = createGzipBase64(outputFilename);
-        //const base64Data = createGzipBase64(outputFilename)
         console.log('Base64 data: ' + base64Data);
         (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
             headers: {
