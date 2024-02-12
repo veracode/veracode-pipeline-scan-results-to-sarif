@@ -29323,13 +29323,13 @@ function uploadSARIF(outputFilename, opt) {
                 gzip.on('end', () => {
                     const compressedBuffer = buffer_1.Buffer.concat(compressedData);
                     let generatedBase64Data = compressedBuffer.toString('base64');
-                    return generatedBase64Data;
+                    console.log('BAS64 generated' + generatedBase64Data);
                 });
                 inputStream.pipe(gzip);
             });
         }
         const base64Data = createGzipBase64(outputFilename);
-        console.log('Base64 data: ' + JSON.stringify(base64Data));
+        console.log('Base64 data: ' + base64Data);
         (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
             headers: {
                 authorization: opt.githubToken
