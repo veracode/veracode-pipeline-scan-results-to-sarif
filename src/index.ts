@@ -74,8 +74,6 @@ async function uploadSARIF(outputFilename:any, opt:any) {
         headers: {
             authorization: opt.githubToken
         },
-        owner: opt.repo_owner,
-        repo: opt.repo_name,
         ref: opt.ref,
         commit_sha: opt.commitSHA,
         sarif: base64Data
