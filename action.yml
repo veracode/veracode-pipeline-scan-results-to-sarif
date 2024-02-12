@@ -36,6 +36,14 @@ inputs:
     description: 'GitHub Token'
     required: true
     default: ${{ github.token }}
+  ref:
+    description: 'The git ref'
+    required: true
+    default: ${{ github.ref }}
+  commit_sha:
+    description: 'The git commit sha'
+    required: true
+    default: ${{ github.sha }}
 runs:
   using: 'node20'
   main: 'dist/index.js'

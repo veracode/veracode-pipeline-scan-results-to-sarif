@@ -29202,6 +29202,8 @@ try {
         inputFilename: core.getInput('pipeline-results-json', { required: true }),
         outputFilename: core.getInput('output-results-sarif', { required: true }),
         githubToken: core.getInput('githubToken', { required: true }),
+        commitSHA: core.getInput('commitSHA', { required: true }),
+        ref: core.getInput('ref', { required: true }),
         ruleLevel: core.getInput('finding-rule-level'),
         repo_owner: owner,
         repo_name: repo,
@@ -29266,6 +29268,8 @@ const Converter_1 = __nccwpck_require__(7128);
 const utils_1 = __nccwpck_require__(8149);
 const core = __importStar(__nccwpck_require__(5127));
 const request_1 = __nccwpck_require__(3986);
+const zlib_1 = __nccwpck_require__(9796);
+const buffer_1 = __nccwpck_require__(4300);
 function run(opt, msgFunc) {
     const inputFilename = opt.inputFilename;
     const outputFilename = opt.outputFilename;
@@ -29308,13 +29312,30 @@ function uploadSARIF(outputFilename, opt) {
     return __awaiter(this, void 0, void 0, function* () {
         //upload SARIF
         console.log('opts: ' + JSON.stringify(opt));
-        yield (0, request_1.request)('PUT /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/analysis/status', {
+        let base64Data;
+        //gzip compress and base64 encode the SARIF file
+        const gzip = (0, zlib_1.createGzip)();
+        const inputStream = fs_1.default.createReadStream(outputFilename);
+        let compressedData = [];
+        gzip.on('data', (chunk) => {
+            compressedData.push(chunk);
+        });
+        gzip.on('end', () => {
+            const compressedBuffer = buffer_1.Buffer.concat(compressedData);
+            // Step 2: Encode the compressed data to base64
+            const base64Data = compressedBuffer.toString('base64');
+            console.log(base64Data);
+        });
+        inputStream.pipe(gzip);
+        yield (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
             headers: {
                 authorization: opt.githubToken
             },
             owner: opt.repo_owner,
             repo: opt.repo_name,
-            data: outputFilename
+            ref: opt.ref,
+            commit_sha: opt.commitSHA,
+            sarif: base64Data
         });
     });
 }

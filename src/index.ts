@@ -6,6 +6,8 @@ import {PipelineScanResult} from "./PipelineScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
 import { request } from '@octokit/request';
+import { createGzip } from 'zlib';
+import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
     const inputFilename = opt.inputFilename
@@ -50,13 +52,37 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
 async function uploadSARIF(outputFilename:any, opt:any) {
     //upload SARIF
     console.log('opts: '+JSON.stringify(opt))
-    await request('PUT /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/analysis/status', {
+
+    let base64Data
+    //gzip compress and base64 encode the SARIF file
+    const gzip = createGzip();
+    const inputStream = fs.createReadStream(outputFilename);
+    let compressedData: Buffer[] = [];
+
+    gzip.on('data', (chunk: Buffer) => {
+        compressedData.push(chunk);
+    });
+
+    gzip.on('end', () => {
+        const compressedBuffer = Buffer.concat(compressedData);
+
+        // Step 2: Encode the compressed data to base64
+        const base64Data = compressedBuffer.toString('base64');
+        console.log(base64Data);
+    });
+
+    inputStream.pipe(gzip);
+
+
+    await request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
         headers: {
             authorization: opt.githubToken
         },
         owner: opt.repo_owner,
         repo: opt.repo_name,
-        data: outputFilename
+        ref: opt.ref,
+        commit_sha: opt.commitSHA,
+        sarif: base64Data
     })
 
 }

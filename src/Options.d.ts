@@ -5,5 +5,7 @@ export interface Options {
     pathReplacers: string,
     repo_owner: string,
     repo_name: string,
-    githubToken: string
+    githubToken: string,
+    commitSHA: string,
+    ref: string
 }

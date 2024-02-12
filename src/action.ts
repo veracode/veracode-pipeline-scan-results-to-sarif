@@ -21,6 +21,8 @@ try {
         inputFilename: core.getInput('pipeline-results-json', {required: true}),
         outputFilename: core.getInput('output-results-sarif', {required: true}),
         githubToken: core.getInput('githubToken', {required: true}),
+        commitSHA: core.getInput('commitSHA', {required: true}),
+        ref: core.getInput('ref', {required: true}),
         ruleLevel: core.getInput('finding-rule-level'),
         repo_owner: owner,
         repo_name: repo,
