@@ -29314,7 +29314,7 @@ function uploadSARIF(outputFilename, opt) {
         console.log('opts: ' + JSON.stringify(opt));
         //gzip compress and base64 encode the SARIF file
         function createGzipBase64(outputFilename) {
-            return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
                 const gzip = (0, zlib_1.createGzip)();
                 const inputStream = fs_1.default.createReadStream(outputFilename);
                 let compressedData = [];

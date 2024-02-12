@@ -54,21 +54,24 @@ async function uploadSARIF(outputFilename:any, opt:any) {
     console.log('opts: '+JSON.stringify(opt))
 
     //gzip compress and base64 encode the SARIF file
-    async function createGzipBase64 (outputFilename:any) {
-        const gzip = createGzip();
-        const inputStream = fs.createReadStream(outputFilename);
-        let compressedData: Buffer[] = [];
+    function createGzipBase64 (outputFilename:any): Promise<string> {
+        return new Promise((resolve, reject) => {
+        
+            const gzip = createGzip();
+            const inputStream = fs.createReadStream(outputFilename);
+            let compressedData: Buffer[] = [];
 
-        gzip.on('data', (chunk: Buffer) => {
-            compressedData.push(chunk);
-        });
+            gzip.on('data', (chunk: Buffer) => {
+                compressedData.push(chunk);
+            });
 
-        gzip.on('end', () => {
-            const compressedBuffer = Buffer.concat(compressedData);
-            let generatedBase64Data = compressedBuffer.toString('base64');
-            return generatedBase64Data
-        });
-        inputStream.pipe(gzip);
+            gzip.on('end', () => {
+                const compressedBuffer = Buffer.concat(compressedData);
+                let generatedBase64Data = compressedBuffer.toString('base64');
+                return generatedBase64Data
+            });
+            inputStream.pipe(gzip);
+        })
     }
 
     const base64Data = createGzipBase64(outputFilename)
