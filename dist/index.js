@@ -29323,7 +29323,7 @@ function uploadSARIF(outputFilename, opt) {
         gzip.on('end', () => {
             const compressedBuffer = buffer_1.Buffer.concat(compressedData);
             // Step 2: Encode the compressed data to base64
-            const base64Data = compressedBuffer.toString('base64');
+            let base64Data = compressedBuffer.toString('base64');
             console.log(base64Data);
         });
         inputStream.pipe(gzip);
