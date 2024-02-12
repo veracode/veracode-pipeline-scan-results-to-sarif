@@ -40,7 +40,7 @@ inputs:
     description: 'The git ref'
     required: true
     default: ${{ github.ref }}
-  commit_sha:
+  commitSHA:
     description: 'The git commit sha'
     required: true
     default: ${{ github.sha }}
