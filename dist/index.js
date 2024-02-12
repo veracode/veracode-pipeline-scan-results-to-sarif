@@ -29308,12 +29308,12 @@ function uploadSARIF(outputFilename, opt) {
     return __awaiter(this, void 0, void 0, function* () {
         //upload SARIF
         console.log('opts: ' + JSON.stringify(opt));
-        yield (0, request_1.request)('PUT /repos/' + opt.owner + '/' + opt.repo + '/code-scanning/analysis/status', {
+        yield (0, request_1.request)('PUT /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/analysis/status', {
             headers: {
                 authorization: opt.githubToken
             },
-            owner: opt.owner,
-            repo: opt.repo,
+            owner: opt.repo_owner,
+            repo: opt.repo_name,
             data: outputFilename
         });
     });

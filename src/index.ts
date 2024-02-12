@@ -50,12 +50,12 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
 async function uploadSARIF(outputFilename:any, opt:any) {
     //upload SARIF
     console.log('opts: '+JSON.stringify(opt))
-    await request('PUT /repos/'+opt.owner+'/'+opt.repo+'/code-scanning/analysis/status', {
+    await request('PUT /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/analysis/status', {
         headers: {
             authorization: opt.githubToken
         },
-        owner: opt.owner,
-        repo: opt.repo,
+        owner: opt.repo_owner,
+        repo: opt.repo_name,
         data: outputFilename
     })
 
