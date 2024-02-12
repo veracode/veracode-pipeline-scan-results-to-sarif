@@ -43,7 +43,7 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
     fs.writeFileSync(outputFilename, JSON.stringify(output));
     msgFunc('file created: ' + outputFilename);
 
-    uploadSARIF(outputFilename, opt)
+    uploadSARIF(output, opt)
 
 }
 

@@ -29301,7 +29301,7 @@ function run(opt, msgFunc) {
     }
     fs_1.default.writeFileSync(outputFilename, JSON.stringify(output));
     msgFunc('file created: ' + outputFilename);
-    uploadSARIF(outputFilename, opt);
+    uploadSARIF(output, opt);
 }
 exports.run = run;
 function uploadSARIF(outputFilename, opt) {
