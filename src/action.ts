@@ -20,10 +20,10 @@ try {
     run({
         inputFilename: core.getInput('pipeline-results-json', {required: true}),
         outputFilename: core.getInput('output-results-sarif', {required: true}),
+        githubToken: core.getInput('github_token', {required: true}),
         ruleLevel: core.getInput('finding-rule-level'),
         repo_owner: owner,
         repo_name: repo,
-        authToken: core.getInput('github_token'),
         pathReplacers: [
             core.getInput('source-base-path-1'),
             core.getInput('source-base-path-2'),

@@ -32,7 +32,7 @@ inputs:
   repo_name: 
     description: 'repo'
     required: false
-  authToken: 
+  githubToken: 
     description: 'GitHub Token'
     required: true
     default: ${{ github.token }}

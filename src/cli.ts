@@ -20,7 +20,7 @@ try {
         pathReplacers: opts["pathReplace"],
         repo_owner: opts["pathReplace"],
         repo_name: opts["pathReplace"],
-        authToken: opts["pathReplace"],
+        githubToken: opts["pathReplace"],
     }, msg => console.log(msg))
 } catch (error) {
     console.error(error.message);
