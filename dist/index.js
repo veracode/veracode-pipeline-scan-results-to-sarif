@@ -29269,7 +29269,6 @@ const utils_1 = __nccwpck_require__(8149);
 const core = __importStar(__nccwpck_require__(5127));
 const request_1 = __nccwpck_require__(3986);
 const zlib_1 = __nccwpck_require__(9796);
-const buffer_1 = __nccwpck_require__(4300);
 function run(opt, msgFunc) {
     const inputFilename = opt.inputFilename;
     const outputFilename = opt.outputFilename;
@@ -29313,19 +29312,19 @@ function uploadSARIF(outputFilename, opt) {
     return __awaiter(this, void 0, void 0, function* () {
         //gzip compress and base64 encode the SARIF file
         function createGzipBase64(outputFilename) {
-            return new Promise((resolve, reject) => {
-                const gzip = (0, zlib_1.createGzip)();
-                const inputStream = fs_1.default.createReadStream(outputFilename);
-                let compressedData = [];
-                gzip.on('data', (chunk) => {
-                    compressedData.push(chunk);
-                });
-                gzip.on('end', () => {
-                    const compressedBuffer = buffer_1.Buffer.concat(compressedData);
-                    let generatedBase64Data = compressedBuffer.toString('base64');
-                    console.log('BAS64 generated' + generatedBase64Data);
-                });
-                inputStream.pipe(gzip);
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    // Read the entire file into memory
+                    const fileData = fs_1.default.readFileSync(outputFilename);
+                    // Compress the file data
+                    const compressedData = (0, zlib_1.gzipSync)(fileData);
+                    // Encode the compressed data to base64
+                    const base64Data = compressedData.toString('base64');
+                    return base64Data;
+                }
+                catch (error) {
+                    throw error;
+                }
             });
         }
         const base64Data = createGzipBase64(outputFilename);

@@ -6,7 +6,7 @@ import {PipelineScanResult} from "./PipelineScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
 import { request } from '@octokit/request';
-import { createGzip } from 'zlib';
+import { gzipSync } from 'zlib';
 import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
@@ -52,24 +52,22 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
 //upload SARIF
 async function uploadSARIF(outputFilename:any, opt:any) {
     //gzip compress and base64 encode the SARIF file
-    function createGzipBase64 (outputFilename:any): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const gzip = createGzip();
-            const inputStream = fs.createReadStream(outputFilename);
-            let compressedData: Buffer[] = [];
-
-            gzip.on('data', (chunk: Buffer) => {
-                compressedData.push(chunk);
-            });
-
-            gzip.on('end', () => {
-                const compressedBuffer = Buffer.concat(compressedData);
-                let generatedBase64Data = compressedBuffer.toString('base64');
-                console.log('BAS64 generated'+generatedBase64Data)
-            });
-            inputStream.pipe(gzip);
-        })
+    async function createGzipBase64 (outputFilename:any): Promise<string> {
+        try {
+            // Read the entire file into memory
+            const fileData = fs.readFileSync(outputFilename);
+    
+            // Compress the file data
+            const compressedData = gzipSync(fileData);
+    
+            // Encode the compressed data to base64
+            const base64Data = compressedData.toString('base64');
+            return base64Data;
+        } catch (error) {
+            throw error;
+        }
     }
+
     const base64Data = createGzipBase64(outputFilename)
     console.log('Base64 data: '+base64Data);
     request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
