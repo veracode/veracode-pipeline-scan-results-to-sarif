@@ -29267,7 +29267,7 @@ const fs_1 = __importDefault(__nccwpck_require__(7147));
 const Converter_1 = __nccwpck_require__(7128);
 const utils_1 = __nccwpck_require__(8149);
 const core = __importStar(__nccwpck_require__(5127));
-const request_1 = __nccwpck_require__(3986);
+const core_1 = __nccwpck_require__(6461);
 const zlib_1 = __nccwpck_require__(9796);
 function run(opt, msgFunc) {
     const inputFilename = opt.inputFilename;
@@ -29327,12 +29327,17 @@ function uploadSARIF(outputFilename, opt) {
                 }
             });
         }
+        const octokit = new core_1.Octokit({
+            auth: opt.githubToken
+        });
         const base64Data = yield createGzipBase64(outputFilename);
         console.log('Base64 data: ' + base64Data);
-        yield (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
-            headers: {
-                authorization: opt.githubToken
-            },
+        yield octokit.request('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
+            //        headers: {
+            //            authorization: opt.githubToken
+            //        },
+            owner: opt.repo_owner,
+            repo: opt.repo_name,
             ref: opt.ref,
             commit_sha: opt.commitSHA,
             sarif: base64Data

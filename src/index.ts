@@ -6,6 +6,7 @@ import {PipelineScanResult} from "./PipelineScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
 import { request } from '@octokit/request';
+import { Octokit } from '@octokit/core';
 import { gzipSync } from 'zlib';
 import { Buffer } from 'buffer';
 
@@ -68,12 +69,18 @@ async function uploadSARIF(outputFilename:any, opt:any) {
         }
     }
 
+    const octokit = new Octokit({
+        auth: opt.githubToken
+      })
+
     const base64Data = await createGzipBase64(outputFilename)
     console.log('Base64 data: '+base64Data);
-    await request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
-        headers: {
-            authorization: opt.githubToken
-        },
+    await octokit.request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
+//        headers: {
+//            authorization: opt.githubToken
+//        },
+        owner: opt.repo_owner,
+        repo: opt.repo_name,
         ref: opt.ref,
         commit_sha: opt.commitSHA,
         sarif: base64Data
