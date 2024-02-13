@@ -29336,8 +29336,8 @@ function uploadSARIF(outputFilename, opt) {
             //        headers: {
             //            authorization: opt.githubToken
             //        },
-            owner: opt.repo_owner,
-            repo: opt.repo_name,
+            //        owner: opt.repo_owner,
+            //       repo: opt.repo_name,
             ref: opt.ref,
             commit_sha: opt.commitSHA,
             sarif: base64Data
