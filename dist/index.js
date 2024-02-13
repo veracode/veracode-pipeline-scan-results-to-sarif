@@ -29329,7 +29329,8 @@ function uploadSARIF(outputFilename, opt) {
         }
         const base64Data = yield createGzipBase64(outputFilename);
         console.log('Base64 data: ' + base64Data);
-        yield (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/sarifs', {
+        //await request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
+        yield (0, request_1.request)('POST /repos/' + opt.repo_owner + '/' + opt.repo_name + '/code-scanning/analysis', {
             headers: {
                 authorization: opt.githubToken
             },
