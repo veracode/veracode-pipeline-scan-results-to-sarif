@@ -2,6 +2,10 @@
 name: 'Veracode Static Analysis Pipeline Scan and SARIF import'
 description: 'Initiate a Veracode Static Analysis Pipeline Scan and convert the results file to a valid SARIF file'
 inputs:
+  scan-type:
+    description: 'The report should be generated for the scan type specified'
+    required: true
+    default: 'pipeline'
   pipeline-results-json:  # id of input
     description: 'location of the pipeline json result file'
     required: true
