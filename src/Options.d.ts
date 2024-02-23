@@ -1,4 +1,5 @@
 export interface Options {
+    scanType: string,
     inputFilename: string,
     outputFilename: string,
     ruleLevel: string,

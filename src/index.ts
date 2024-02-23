@@ -3,6 +3,7 @@ import {Converter} from "./Converter";
 import {setupSourceReplacement, sliceReportLevels} from "./utils";
 import * as Sarif from "sarif";
 import {PipelineScanResult} from "./PipelineScanResult";
+import { PolicyScanResult } from "./PolicyScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
 import { request } from '@octokit/request';
@@ -11,6 +12,7 @@ import { gzipSync } from 'zlib';
 import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
+    const scanType = opt.scanType
     const inputFilename = opt.inputFilename
     const outputFilename = opt.outputFilename
     const ruleLevel = opt.ruleLevel
@@ -32,11 +34,14 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
         replacers: setupSourceReplacement(...pathReplacers.split(";")),
         reportLevels: sliceReportLevels(ruleLevel)
     }, msgFunc)
-    let output: Sarif.Log | PipelineScanResult
+    let output: Sarif.Log | PipelineScanResult | PolicyScanResult
     try {
-        let results: PipelineScanResult | Sarif.Log = JSON.parse(rawData.toString());
+        let results: PolicyScanResult | PipelineScanResult | Sarif.Log = JSON.parse(rawData.toString());
         try {
-            output = converter.convertPipelineScanResults(results as PipelineScanResult)
+            if(scanType === 'policy') 
+                output = converter.convertPolicyScanResults(results as PolicyScanResult)
+            else
+                output = converter.convertPipelineScanResults(results as PipelineScanResult)
         } catch (_) {
             output = converter.convertSarifLog(results as Sarif.Log)
         }

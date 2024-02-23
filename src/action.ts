@@ -18,6 +18,7 @@ try {
         repo = github.context.repo.repo;
     }
     run({
+        scanType: core.getInput('scan-type', {required: true}),
         inputFilename: core.getInput('pipeline-results-json', {required: true}),
         outputFilename: core.getInput('output-results-sarif', {required: true}),
         githubToken: core.getInput('githubToken', {required: true}),
