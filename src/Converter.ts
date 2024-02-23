@@ -9,6 +9,7 @@ import * as Sarif from 'sarif';
 import {ConversionConfig} from "./ConversionConfig";
 import {getFilePath} from "./utils";
 import {Location, LogicalLocation, Result} from "sarif";
+import { PolicyScanResult, Finding, FindingDetails } from "./PolicyScanResult";
 
 export class Converter {
     private config: ConversionConfig
@@ -248,5 +249,144 @@ export class Converter {
             };
         }
         throw Error("Flaw fingerprints not set or error parsing SARIF fingerprints");
+    }
+
+    convertPolicyScanResults(policyScanResult: PolicyScanResult): Sarif.Log {
+        this.msgFunc('Policy Scan results file found and parsed - validated JSON file');
+        //ToDo: In policy we dont have scan_status
+        /*"scan_status": "SUCCESS"
+         if (policyScanResult.scan_status !== "SUCCESS") {
+             throw Error("Unsuccessful scan status found")
+         }*/
+
+        this.msgFunc('Issues count: ' + policyScanResult._embedded.findings.length);
+        let rules: Sarif.ReportingDescriptor[] = policyScanResult._embedded.findings
+            .reduce((acc, val) => {
+                // dedupe by cwe_id
+                if (!acc.map(value => value.finding_details.cwe.id).includes(val.finding_details.cwe.id)) {
+                    acc.push(val);
+                }
+                return acc;
+            }, <Finding[]>[])
+            .map(issue => this.findingToRule(issue));
+
+        // convert to SARIF json
+        let sarifResults: Sarif.Result[] = policyScanResult._embedded.findings
+            .map(findings => this.findingToResult(findings));
+
+        // construct the full SARIF content
+        return {
+            $schema: "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            version: "2.1.0",
+            runs: [
+                {
+                    tool: {
+                        driver: {
+                            name: "Veracode Static Analysis Policy Scan",
+                            rules: rules
+                        }
+                    },
+                    results: sarifResults
+                }
+            ]
+        };
+    }
+
+    private findingToRule(finding: Finding): Sarif.ReportingDescriptor {
+        /*
+         {
+                  "id": "no-unused-vars",
+                  "shortDescription": {
+                    "text": "disallow unused variables"
+                  },
+                  "helpUri": "https://eslint.org/docs/rules/no-unused-vars",
+                  "properties": {
+                    "category": "Variables"
+                  }
+                }
+        */
+        return {
+            id: finding.finding_details.cwe?.id.toString(),
+            name: finding.finding_details.cwe?.name,
+            shortDescription: {
+                text: "CWE-" + finding.finding_details.cwe?.id.toString() + ": " + finding.finding_details.cwe?.name
+            },
+            helpUri: "https://cwe.mitre.org/data/definitions/" + finding.finding_details.cwe?.id.toString() + ".html",
+            properties: {
+                category: finding.scan_type,
+                tags: [finding.scan_type]
+            },
+            defaultConfiguration: {
+                level: this.config.reportLevels.get(finding.finding_details.severity)
+            }
+        };
+    }
+
+    private findingToResult(finding: Finding): Sarif.Result {
+        let finding_details: FindingDetails = finding.finding_details;
+        // construct flaw location
+        let location: Sarif.Location = {
+            physicalLocation: {
+                artifactLocation: {
+                    uri: getFilePath(finding_details.file_path, this.config.replacers)
+                },
+                region: {
+                    startLine: finding_details.file_line_number
+                }
+            },
+            logicalLocations: [
+                {
+                    name: finding_details.file_name,
+                    fullyQualifiedName: finding_details.procedure,
+                    kind: "function",
+                },
+                {
+                    fullyQualifiedName: finding_details.attack_vector,
+                    kind: "member",
+                    parentIndex: 0
+                }
+            ]
+        }
+        // var flawMatch: FlawMatch
+        // if ( issue.flaw_match === undefined ) {
+        //     var flawMatch: FlawMatch = {
+        //         flaw_hash: "",
+        //         flaw_hash_count: 0,
+        //         flaw_hash_ordinal: 0,
+        //         cause_hash: "",
+        //         cause_hash_count: 0,
+        //         cause_hash_ordinal: 0,
+        //         procedure_hash: "",
+        //         prototype_hash: "",
+        //     } 
+        // }
+        // else {
+        //     var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
+        // }
+
+
+        // let fingerprints: { [key: string]: string } = {
+        //     flawHash: flawMatch.flaw_hash,
+        //     flawHashCount: flawMatch.flaw_hash_count.toString(),
+        //     flawHashOrdinal: flawMatch.flaw_hash_ordinal.toString(),
+        //     causeHash: flawMatch.cause_hash,
+        //     causeHashCount: flawMatch.cause_hash_count.toString(),
+        //     causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
+        //     procedureHash: flawMatch.procedure_hash,
+        //     prototypeHash: flawMatch.prototype_hash,
+        // }
+
+        // construct the issue
+        return {
+            // get the severity number to name
+            level: this.config.reportLevels.get(finding_details.severity),
+            rank: finding_details.severity,
+            message: {
+                text: finding.description,
+            },
+            locations: [location],
+            ruleId: finding_details.cwe?.id.toString(),
+            // partialFingerprints: fingerprints
+        };
     }
 }
