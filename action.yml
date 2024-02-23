@@ -26,6 +26,24 @@ inputs:
     description: 'The conversion rule of Veracode findings to GitHub level'
     required: true
     default: '4:3:0'
+  repo_owner: 
+    description: 'owner'
+    required: false
+  repo_name: 
+    description: 'repo'
+    required: false
+  githubToken: 
+    description: 'GitHub Token'
+    required: true
+    default: ${{ github.token }}
+  ref:
+    description: 'The git ref'
+    required: true
+    default: ${{ github.ref }}
+  commitSHA:
+    description: 'The git commit sha'
+    required: true
+    default: ${{ github.sha }}
 runs:
   using: 'node20'
   main: 'dist/index.js'

@@ -18,6 +18,11 @@ try {
         outputFilename: opts["output"],
         ruleLevel: opts["ruleLevel"],
         pathReplacers: opts["pathReplace"],
+        repo_owner: opts["pathReplace"],
+        repo_name: opts["pathReplace"],
+        githubToken: opts["pathReplace"],
+        commitSHA: opts["pathReplace"],
+        ref: opts["pathReplace"]
     }, msg => console.log(msg))
 } catch (error) {
     console.error(error.message);

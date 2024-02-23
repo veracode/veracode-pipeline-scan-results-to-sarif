@@ -5,6 +5,10 @@ import * as Sarif from "sarif";
 import {PipelineScanResult} from "./PipelineScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
+import { request } from '@octokit/request';
+import { Octokit } from '@octokit/core';
+import { gzipSync } from 'zlib';
+import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
     const inputFilename = opt.inputFilename
@@ -22,8 +26,6 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
         core.info("Please find more information here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels")
         core.info("##################")
     }
-
-
 
     let rawData: Buffer = fs.readFileSync(inputFilename);
     let converter = new Converter({
@@ -43,4 +45,45 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
     }
     fs.writeFileSync(outputFilename, JSON.stringify(output));
     msgFunc('file created: ' + outputFilename);
+
+    uploadSARIF(outputFilename, opt)
+
+}
+
+//upload SARIF
+async function uploadSARIF(outputFilename:any, opt:any) {
+    //gzip compress and base64 encode the SARIF file
+    async function createGzipBase64 (outputFilename:any): Promise<string> {
+        try {
+            // Read the entire file into memory
+            const fileData = fs.readFileSync(outputFilename);
+    
+            // Compress the file data
+            const compressedData = gzipSync(fileData);
+    
+            // Encode the compressed data to base64
+            const base64Data = compressedData.toString('base64');
+            return base64Data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const octokit = new Octokit({
+        auth: opt.githubToken
+      })
+
+    const base64Data = await createGzipBase64(outputFilename)
+    console.log('Base64 data: '+base64Data);
+    await octokit.request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
+//        headers: {
+//            authorization: opt.githubToken
+//        },
+//        owner: opt.repo_owner,
+//       repo: opt.repo_name,
+        ref: opt.ref,
+        commit_sha: opt.commitSHA,
+        sarif: base64Data
+    })
+
 }
