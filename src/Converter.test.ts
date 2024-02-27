@@ -22,6 +22,23 @@ test('can convert veracode results to sarif results', t => {
     t.deepEqual(sarifResults, output)
 })
 
+test('can convert veracode policy scan results to sarif results', t => {
+    let veracodeResultsPath = __dirname + '/../test_resource/policy_flaws.json';
+    let sarifResultsPath = __dirname + '/../test_resource/policy_flaws.sarif.json';
+
+    let veracodeResultsData = fs.readFileSync(veracodeResultsPath);
+    let veracodeResults = JSON.parse(veracodeResultsData.toString());
+
+    let sarifResultsData = fs.readFileSync(sarifResultsPath);
+    let sarifResults: Log = JSON.parse(sarifResultsData.toString())
+
+    let output = new Converter({
+        reportLevels: sliceReportLevels('4:3:0'),
+        replacers: setupSourceReplacement(),
+    }, msg => {}).convertPolicyScanResults(veracodeResults);
+    t.deepEqual(sarifResults, output)
+})
+
 test('can convert sarif results to veracode results', t => {
     let veracodeResultsPath = __dirname + '/../test_resource/sarifToResults.json';
     let sarifResultsPath = __dirname + '/../test_resource/sarifToResults.sarif.json';
