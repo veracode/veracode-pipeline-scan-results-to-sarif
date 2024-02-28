@@ -13,7 +13,7 @@ import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
     const scanType = opt.scanType
-    const inputFilename = opt.inputFilename
+    const inputFilename = opt.scanType == 'pipeline' ? opt.inputFilename : opt.resultsJson
     const outputFilename = opt.outputFilename
     const ruleLevel = opt.ruleLevel
     const pathReplacers = opt.pathReplacers

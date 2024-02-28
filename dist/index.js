@@ -29317,6 +29317,7 @@ try {
     }
     (0, index_1.run)({
         scanType: core.getInput('scan-type', { required: true }),
+        resultsJson: core.getInput('results-json', { required: true }),
         inputFilename: core.getInput('pipeline-results-json', { required: true }),
         outputFilename: core.getInput('output-results-sarif', { required: true }),
         githubToken: core.getInput('githubToken', { required: true }),
@@ -29389,7 +29390,7 @@ const core_1 = __nccwpck_require__(3603);
 const zlib_1 = __nccwpck_require__(9796);
 function run(opt, msgFunc) {
     const scanType = opt.scanType;
-    const inputFilename = opt.inputFilename;
+    const inputFilename = opt.scanType == 'pipeline' ? opt.inputFilename : opt.resultsJson;
     const outputFilename = opt.outputFilename;
     const ruleLevel = opt.ruleLevel;
     const pathReplacers = opt.pathReplacers;
