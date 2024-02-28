@@ -6,23 +6,23 @@ import {
     SourceFile
 } from "./PipelineScanResult";
 import * as Sarif from 'sarif';
-import {ConversionConfig} from "./ConversionConfig";
-import {getFilePath} from "./utils";
-import {Location, LogicalLocation, Result} from "sarif";
-import { PolicyScanResult, Finding, FindingDetails } from "./PolicyScanResult";
+import { ConversionConfig } from "./ConversionConfig";
+import { getFilePath } from "./utils";
+import { Location, LogicalLocation, Result } from "sarif";
+import { PolicyScanResult, Finding, FindingDetails, PolicyFlawMatch, PolicyFlawFingerprint } from "./PolicyScanResult";
 
 export class Converter {
     private config: ConversionConfig
     private readonly msgFunc: (msg: string) => void
-    
+
 
     constructor(conversionConfig: ConversionConfig, msgFunc: (msg: string) => void) {
         this.config = conversionConfig
         this.msgFunc = msgFunc
     }
 
-    
-    
+
+
     convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
@@ -118,7 +118,7 @@ export class Converter {
             ]
         }
         var flawMatch: FlawMatch
-        if ( issue.flaw_match === undefined ) {
+        if (issue.flaw_match === undefined) {
             var flawMatch: FlawMatch = {
                 flaw_hash: "",
                 flaw_hash_count: 0,
@@ -128,13 +128,13 @@ export class Converter {
                 cause_hash_ordinal: 0,
                 procedure_hash: "",
                 prototype_hash: "",
-            } 
+            }
         }
         else {
             var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
         }
 
-        
+
         let fingerprints: { [key: string]: string } = {
             flawHash: flawMatch.flaw_hash,
             flawHashCount: flawMatch.flaw_hash_count.toString(),
@@ -209,7 +209,7 @@ export class Converter {
     }
 
     private fingerprintsToFlawMatch(fingerprints: { [key: string]: string },
-                                    partialFingerpirnts: { [key: string]: string }): FlawFingerprint {
+        partialFingerpirnts: { [key: string]: string }): FlawFingerprint {
         if (partialFingerpirnts &&
             ["procedureHash", "prototypeHash",
                 "flawHash", "flawHashCount", "flawHashOrdinal",
@@ -253,12 +253,6 @@ export class Converter {
 
     convertPolicyScanResults(policyScanResult: PolicyScanResult): Sarif.Log {
         this.msgFunc('Policy Scan results file found and parsed - validated JSON file');
-        //ToDo: In policy we dont have scan_status
-        /*"scan_status": "SUCCESS"
-         if (policyScanResult.scan_status !== "SUCCESS") {
-             throw Error("Unsuccessful scan status found")
-         }*/
-
         this.msgFunc('Issues count: ' + policyScanResult._embedded.findings.length);
         let rules: Sarif.ReportingDescriptor[] = policyScanResult._embedded.findings
             .reduce((acc, val) => {
@@ -347,34 +341,23 @@ export class Converter {
                 }
             ]
         }
-        // var flawMatch: FlawMatch
-        // if ( issue.flaw_match === undefined ) {
-        //     var flawMatch: FlawMatch = {
-        //         flaw_hash: "",
-        //         flaw_hash_count: 0,
-        //         flaw_hash_ordinal: 0,
-        //         cause_hash: "",
-        //         cause_hash_count: 0,
-        //         cause_hash_ordinal: 0,
-        //         procedure_hash: "",
-        //         prototype_hash: "",
-        //     } 
-        // }
-        // else {
-        //     var flawMatch: FlawMatch = issue.flaw_match as FlawMatch
-        // }
+        var flawMatch: PolicyFlawMatch
+        if (finding.flaw_match === undefined) {
+            var flawMatch: PolicyFlawMatch = {
+                context_guid: "",
+                file_path: "",
+                procedure: "",
+            }
+        }
+        else {
+            var flawMatch: PolicyFlawMatch = finding.flaw_match as PolicyFlawMatch
+        }
 
-
-        // let fingerprints: { [key: string]: string } = {
-        //     flawHash: flawMatch.flaw_hash,
-        //     flawHashCount: flawMatch.flaw_hash_count.toString(),
-        //     flawHashOrdinal: flawMatch.flaw_hash_ordinal.toString(),
-        //     causeHash: flawMatch.cause_hash,
-        //     causeHashCount: flawMatch.cause_hash_count.toString(),
-        //     causeHashOrdinal: flawMatch.cause_hash_ordinal.toString(),
-        //     procedureHash: flawMatch.procedure_hash,
-        //     prototypeHash: flawMatch.prototype_hash,
-        // }
+        let fingerprints: { [key: string]: string } = {
+            context_guid: flawMatch.context_guid,
+            file_path: flawMatch.file_path,
+            procedure: flawMatch.procedure
+        }
 
         // construct the issue
         return {
@@ -386,7 +369,7 @@ export class Converter {
             },
             locations: [location],
             ruleId: finding_details.cwe?.id.toString(),
-            // partialFingerprints: fingerprints
+            partialFingerprints: fingerprints
         };
     }
 }

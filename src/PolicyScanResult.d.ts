@@ -51,6 +51,7 @@ export interface Finding {
     finding_status: FindingStatus;
     finding_details: FindingDetails;
     build_id: number;
+    flaw_match: PolicyFlawFingerprint
 }
 
 export interface Links {
@@ -66,3 +67,15 @@ export interface Links {
         templated?: boolean;
     };
 }
+
+export interface PolicyFlawMatch {
+    context_guid: string
+    file_path: string
+    procedure: string
+}
+
+export interface SarifFingerprint {
+    sarif_fingerprint: string
+}
+
+export type PolicyFlawFingerprint = SarifFingerprint | PolicyFlawMatch
