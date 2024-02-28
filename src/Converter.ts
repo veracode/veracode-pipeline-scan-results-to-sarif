@@ -372,4 +372,90 @@ export class Converter {
             partialFingerprints: fingerprints
         };
     }
+
+    policyResultConvertSarifLog(sarifLog: Sarif.Log): PolicyScanResult {
+        let issues: Finding[] = sarifLog.runs
+            // flatmap results
+            .map(run => run.results)
+            .reduce((acc, val) => acc.concat(val), [])
+            // flatmap results to each location
+            .map(val => val.locations.map(location => [val, location] as [Result, Location]))
+            .reduce((acc, val) => acc.concat(val), [])
+            // get member which is nested within function
+            .map(pair => {
+                let possibleCallees = pair[1].logicalLocations
+                    .filter(logicalLocation =>
+                        logicalLocation.kind === "member" &&
+                        logicalLocation.parentIndex !== undefined &&
+                        pair[1].logicalLocations[logicalLocation.parentIndex].kind === "function")
+                if (possibleCallees.length > 0) {
+                    return [pair[0], pair[1], possibleCallees[0]] as [Result, Location, LogicalLocation]
+                } else {
+                    return undefined
+                }
+            })
+            .filter(triple => triple !== undefined)
+            .map(triple => {
+                let result = triple[0]
+                let location = triple[1]
+                let memberCallLogicalLocations = triple[2]
+                let functionLogicalLocations = location.logicalLocations[memberCallLogicalLocations.parentIndex]
+                return {
+                    // title: memberCallLogicalLocations.fullyQualifiedName,
+                    description: result.message.text,
+                    finding_details: {
+                        cwe: {
+                            id: result.ruleId ? parseInt(result.ruleId) : null
+                        },
+                        severity: result.rank,
+                        file_path: location.physicalLocation.artifactLocation.uri,
+                        file_line_number: location.physicalLocation.region.startLine,
+                        file_name: functionLogicalLocations.name,
+                        attack_vector: functionLogicalLocations.fullyQualifiedName
+                    },
+                    flaw_match: this.fingerprintsToPolicyFlawMatch(result.partialFingerprints)
+                }
+            });
+        return {
+            _embedded: {
+                findings: issues
+            }
+        }
+    }
+
+    private fingerprintsToPolicyFlawMatch(partialFingerpirnts: { [key: string]: string }): PolicyFlawFingerprint {
+        if (partialFingerpirnts &&
+            ["context_guid", "file_path", "procedure"]
+                .every(propertyName => propertyName in partialFingerpirnts && partialFingerpirnts[propertyName])) {
+            // we do this because the values of fingerprints is string type
+            // but FLawMatch have number typed properties
+            this.msgFunc("Using partial fingerprint keys")
+            return {
+                context_guid: partialFingerpirnts["procedureHash"].toString(),
+                file_path: partialFingerpirnts["file_path"].toString(),
+                procedure: partialFingerpirnts["procedure"].toString(),
+
+            };
+        }
+        let fingerprintKeys = Object.keys(partialFingerpirnts);
+        let versionRegExp = new RegExp(/\/v(\d+)$/);
+        if (fingerprintKeys.length > 0) {
+            let highestKey = fingerprintKeys.reduce((current, nextValue) => {
+                let currentVersionMatch = current.match(versionRegExp)
+                let currentVersion = currentVersionMatch === null ? 0 : parseInt(currentVersionMatch[1])
+                let nextVersionMatch = nextValue.match(versionRegExp)
+                let nextVersion = nextVersionMatch === null ? 0 : parseInt(nextVersionMatch[1])
+                if (currentVersion > nextVersion) {
+                    return current
+                } else {
+                    return nextValue
+                }
+            }, fingerprintKeys[0]);
+            this.msgFunc("Using " + highestKey + " as main fingerprint");
+            return {
+                sarif_fingerprint: partialFingerpirnts[highestKey]
+            };
+        }
+        throw Error("Flaw fingerprints not set or error parsing SARIF fingerprints");
+    }
 }

@@ -37,13 +37,20 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
     let output: Sarif.Log | PipelineScanResult | PolicyScanResult
     try {
         let results: PolicyScanResult | PipelineScanResult | Sarif.Log = JSON.parse(rawData.toString());
-        try {
-            if(scanType === 'policy') 
+        if (scanType === 'policy') {
+            try {
                 output = converter.convertPolicyScanResults(results as PolicyScanResult)
-            else
+            } catch (error) {
+                core.info(`Failed to convert policy result to sarif : ${error}`);
+                output = converter.policyResultConvertSarifLog(results as Sarif.Log)
+            }
+        } else {
+            try {
                 output = converter.convertPipelineScanResults(results as PipelineScanResult)
-        } catch (_) {
-            output = converter.convertSarifLog(results as Sarif.Log)
+            } catch (error) {
+                core.info(`Failed to convert pipeline result to sarif : ${error}`);
+                output = converter.convertSarifLog(results as Sarif.Log)
+            }
         }
     } catch (error) {
         throw Error('Failed to parse input file ' + inputFilename)

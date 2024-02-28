@@ -6,8 +6,8 @@ export interface PolicyScanResult {
 
 export interface CWE {
     id: number;
-    name: string;
-    href: string;
+    name?: string;
+    href?: string;
 }
 
 export interface FindingCategory {
@@ -17,16 +17,16 @@ export interface FindingCategory {
 }
 
 export interface FindingDetails {
-    severity: number;
-    cwe: CWE;
+    severity?: number;
+    cwe?: CWE;
     file_path: string;
     file_name: string;
-    module: string;
-    relative_location: number;
-    finding_category: FindingCategory;
-    procedure: string;
-    exploitability: number;
-    attack_vector: string;
+    module?: string;
+    relative_location?: number;
+    finding_category?: FindingCategory;
+    procedure?: string;
+    exploitability?: number;
+    attack_vector?: string;
     file_line_number: number;
 }
 
@@ -41,16 +41,16 @@ export interface FindingStatus {
 }
 
 export interface Finding {
-    issue_id: number;
-    scan_type: string;
-    description: string;
-    count: number;
-    context_type: string;
-    context_guid: string;
-    violates_policy: boolean;
-    finding_status: FindingStatus;
+    issue_id?: number;
+    scan_type?: string;
+    description?: string;
+    count?: number;
+    context_type?: string;
+    context_guid?: string;
+    violates_policy?: boolean;
+    finding_status?: FindingStatus;
     finding_details: FindingDetails;
-    build_id: number;
+    build_id?: number;
     flaw_match: PolicyFlawFingerprint
 }
 

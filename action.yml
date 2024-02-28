@@ -6,7 +6,7 @@ inputs:
     description: 'The report should be generated for the scan type specified'
     required: true
     default: 'pipeline'
-  results-json:  # id of input
+  results-json:
     description: 'location of the policy or pipeline json result file'
     required: true
     default: 'results.json'
