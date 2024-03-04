@@ -21,7 +21,11 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
 
 - ### `results-json`
   **Required** The location of the JSON result file for the policy or pipeline.
-  |Default value |  `"filtered_results.json"`|
+  |Default value |  `"results.json"`|
+  --- | ---
+
+- ### `pipeline-results-json` -- DEPRECATED
+  **Make sure you use results-json instead**
   --- | ---
 
 - ### `output-results-sarif`
@@ -56,10 +60,10 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
   --- | ---
 
 - ### `repo_owner`
-  **Required** The account owner of the repository. The name is not case sensitive.
+  **Optional** The account owner of the repository. The name is not case sensitive. This is only required if the action runs on a different repository than the one where the results should be published.
 
 - ### `repo_name`
-  **Required** The name of the repository without the .git extension. The name is not case sensitive.
+  **Optional** The name of the repository without the .git extension. The name is not case sensitive. This is only required if the action runs on a different repository than the one where the results should be published
 
 - ### `githubToken`
   **Required** GitHub token is a secure token that allows the workflow to interact with the GitHub API and perform actions on behalf of the repository or user
@@ -104,6 +108,29 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
  - ### Policy Scan
 
  ```yaml
+    get-policy-flaws:
+      runs-on: ubuntu-latest
+      container: 
+        image: veracode/api-signing:latest
+      steps:
+        - name: get policy flaws
+          run: |
+            cd /tmp
+            export VERACODE_API_KEY_ID=${{ secrets.VID }}
+            export VERACODE_API_KEY_SECRET=${{ secrets.VKEY }}
+            guid=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v1/applications?name=VERACODE-PROFILE-NAME" | jq -r '._embedded.applications[0].guid') 
+            echo GUID: ${guid}
+            total_flaws=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True" | jq -r '.page.total_elements')
+            echo TOTAL_FLAWS: ${total_flaws}
+            http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
+
+        - name: save results file
+          uses: actions/upload-artifact@v3
+          with:
+            name: policy-flaws
+            path: /tmp/policy_flaws.json
+
+
   results_to_sarif:
     needs: policy_scan
     runs-on: ubuntu-latest
@@ -124,7 +151,7 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
           output-results-sarif: veracode-results.sarif
           repo_owner: OWNER
           repo_name: REPO
-          commitSHA: 4b6472266afd7b471e86085a6659e8c7f2b119da
+          commitSHA: COMMIT-SHA
           ref: refs/heads/master
           githubToken: *****
  ```
