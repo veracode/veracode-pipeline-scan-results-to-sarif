@@ -1,0 +1,99 @@
+{"_embedded": {"findings": [
+  {
+    "issue_id": 1,
+    "scan_type": "STATIC",
+    "description": "<span>This call to java.lang.ProcessBuilder.start() contains a command injection flaw.  The argument to the function is constructed using untrusted input.  If an attacker is allowed to specify all or part of the command, it may be possible to execute commands on the server with the privileges of the executing process.  The level of exposure depends on the effectiveness of input validation routines, if any. start() was called on the processBuilder object, which contains tainted data. The tainted data originated from an earlier call to AnnotationVirtualController.vc_annotation_entry.</span> <span>Validate all untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.  When using blocklists, be sure that the sanitizing routine performs a sufficient number of iterations to remove all instances of disallowed characters.  Most APIs that execute system commands also have a \"safe\" version of the method that takes an array of strings as input rather than a single string, which protects against some forms of command injection.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/78.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/Command_Injection\">OWASP</a></span>",
+    "count": 1,
+    "context_type": "APPLICATION",
+    "context_guid": "b6b78e10-ba87-48af-914c-b5728a0e2830",
+    "violates_policy": true,
+    "finding_status": {
+      "first_found_date": "2024-02-21T10:00:42.464Z",
+      "status": "OPEN",
+      "resolution": "UNRESOLVED",
+      "mitigation_review_status": "NONE",
+      "new": false,
+      "resolution_status": "NONE",
+      "last_seen_date": "2024-02-28T05:29:48.287Z"
+    },
+    "finding_details": {
+      "severity": 5,
+      "cwe": {
+        "id": 78,
+        "name": "Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+        "href": "https://api.veracode.com/appsec/v1/cwes/78"
+      },
+      "file_path": "com/scalesec/vulnado/Cowsay.java",
+      "file_name": "Cowsay.java",
+      "module": "vulnado-0.0.1-SNAPSHOT.jar",
+      "relative_location": 50,
+      "finding_category": {
+        "id": 18,
+        "name": "Command or Argument Injection",
+        "href": "https://api.veracode.com/appsec/v1/categories/18"
+      },
+      "procedure": "com.scalesec.vulnado.Cowsay.run",
+      "exploitability": 0,
+      "attack_vector": "java.lang.ProcessBuilder.start",
+      "file_line_number": 16
+    },
+    "build_id": 33321946
+  },
+  {
+    "issue_id": 2,
+    "scan_type": "STATIC",
+    "description": "<span>This database query contains a SQL injection flaw.  The call to java.sql.Statement.executeQuery() constructs a dynamic SQL query using a variable derived from untrusted input.  An attacker could exploit this flaw to execute arbitrary SQL queries against the database. The first argument to executeQuery() contains tainted data from the variable query. The tainted data originated from an earlier call to AnnotationVirtualController.vc_annotation_entry.</span> <span>Avoid dynamically constructing SQL queries.  Instead, use parameterized prepared statements to prevent the database from interpreting the contents of bind variables as part of the query.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/89.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/SQL_Injection\">OWASP</a></span>",
+    "count": 1,
+    "context_type": "APPLICATION",
+    "context_guid": "b6b78e10-ba87-48af-914c-b5728a0e2830",
+    "violates_policy": true,
+    "finding_status": {
+      "first_found_date": "2024-02-21T10:00:42.464Z",
+      "status": "OPEN",
+      "resolution": "UNRESOLVED",
+      "mitigation_review_status": "NONE",
+      "new": false,
+      "resolution_status": "NONE",
+      "last_seen_date": "2024-02-28T05:29:48.287Z"
+    },
+    "finding_details": {
+      "severity": 4,
+      "cwe": {
+        "id": 89,
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "href": "https://api.veracode.com/appsec/v1/cwes/89"
+      },
+      "file_path": "com/scalesec/vulnado/User.java",
+      "file_name": "User.java",
+      "module": "vulnado-0.0.1-SNAPSHOT.jar",
+      "relative_location": 35,
+      "finding_category": {
+        "id": 19,
+        "name": "SQL Injection",
+        "href": "https://api.veracode.com/appsec/v1/categories/19"
+      },
+      "procedure": "com.scalesec.vulnado.User.fetch",
+      "exploitability": 0,
+      "attack_vector": "java.sql.Statement.executeQuery",
+      "file_line_number": 49
+    },
+    "build_id": 33321946
+  }
+]}, "_links": {
+  "self": {
+    "href": "https://api.veracode.com/appsec/v2/applications/b6b78e10-ba87-48af-914c-b5728a0e2830/findings?violates_policy=true{&context,severity,severity_gte,cwe,finding_category,cvss,cvss_gte,cve,include_annot,new,include_exp_date,mitigated_after,sca_scan_mode,sca_dep_mode,scan_type}",
+    "templated": true
+  },
+  "application": {
+    "href": "https://api.veracode.com/appsec/v1/applications/b6b78e10-ba87-48af-914c-b5728a0e2830"
+  },
+  "sca": {
+    "href": "https://api.veracode.com/appsec/v2/applications/b6b78e10-ba87-48af-914c-b5728a0e2830/findings?violates_policy=true&scan_type=SCA{&context,severity,severity_gte,cwe,finding_category,cvss,cvss_gte,cve,include_annot,new,include_exp_date,mitigated_after,sca_scan_mode,sca_dep_mode}",
+    "templated": true
+  }
+}, "page": {
+  "size": 20,
+  "total_elements": 2,
+  "total_pages": 1,
+  "number": 0
+}}

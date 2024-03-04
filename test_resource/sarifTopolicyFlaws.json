@@ -1,0 +1,38 @@
+{
+  "_embedded": {
+    "findings": [
+      {
+        "description": "<span>This call to java.lang.ProcessBuilder.start() contains a command injection flaw.  The argument to the function is constructed using untrusted input.  If an attacker is allowed to specify all or part of the command, it may be possible to execute commands on the server with the privileges of the executing process.  The level of exposure depends on the effectiveness of input validation routines, if any. start() was called on the processBuilder object, which contains tainted data. The tainted data originated from an earlier call to AnnotationVirtualController.vc_annotation_entry.</span> <span>Validate all untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.  When using blocklists, be sure that the sanitizing routine performs a sufficient number of iterations to remove all instances of disallowed characters.  Most APIs that execute system commands also have a \"safe\" version of the method that takes an array of strings as input rather than a single string, which protects against some forms of command injection.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/78.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/Command_Injection\">OWASP</a></span>",
+        "finding_details": {
+          "cwe": {
+            "id": 78
+          },
+          "severity": 5,
+          "file_path": "com/scalesec/vulnado/Cowsay.java",
+          "file_line_number": 16,
+          "file_name": "Cowsay.java",
+          "attack_vector": "com.scalesec.vulnado.Cowsay.run"
+        },
+        "flaw_match": {
+          "sarif_fingerprint": ""
+        }
+      },
+      {
+        "description": "<span>This database query contains a SQL injection flaw.  The call to java.sql.Statement.executeQuery() constructs a dynamic SQL query using a variable derived from untrusted input.  An attacker could exploit this flaw to execute arbitrary SQL queries against the database. The first argument to executeQuery() contains tainted data from the variable query. The tainted data originated from an earlier call to AnnotationVirtualController.vc_annotation_entry.</span> <span>Avoid dynamically constructing SQL queries.  Instead, use parameterized prepared statements to prevent the database from interpreting the contents of bind variables as part of the query.  Always validate untrusted input to ensure that it conforms to the expected format, using centralized data validation routines when possible.</span> <span>References: <a href=\"https://cwe.mitre.org/data/definitions/89.html\">CWE</a> <a href=\"https://owasp.org/www-community/attacks/SQL_Injection\">OWASP</a></span>",
+        "finding_details": {
+          "cwe": {
+            "id": 89
+          },
+          "severity": 4,
+          "file_path": "com/scalesec/vulnado/User.java",
+          "file_line_number": 49,
+          "file_name": "User.java",
+          "attack_vector": "com.scalesec.vulnado.User.fetch"
+        },
+        "flaw_match": {
+          "sarif_fingerprint": ""
+        }
+      }
+    ]
+  }
+}

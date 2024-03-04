@@ -3,6 +3,7 @@ import {Converter} from "./Converter";
 import {setupSourceReplacement, sliceReportLevels} from "./utils";
 import * as Sarif from "sarif";
 import {PipelineScanResult} from "./PipelineScanResult";
+import { PolicyScanResult } from "./PolicyScanResult";
 import {Options} from "./Options";
 import * as core from '@actions/core'
 import { request } from '@octokit/request';
@@ -11,7 +12,8 @@ import { gzipSync } from 'zlib';
 import { Buffer } from 'buffer';
 
 export function run(opt: Options, msgFunc: (msg: string) => void) {
-    const inputFilename = opt.inputFilename
+    const scanType = opt.scanType
+    const inputFilename = opt.scanType == 'pipeline' ? opt.inputFilename : opt.resultsJson
     const outputFilename = opt.outputFilename
     const ruleLevel = opt.ruleLevel
     const pathReplacers = opt.pathReplacers
@@ -32,13 +34,23 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
         replacers: setupSourceReplacement(...pathReplacers.split(";")),
         reportLevels: sliceReportLevels(ruleLevel)
     }, msgFunc)
-    let output: Sarif.Log | PipelineScanResult
+    let output: Sarif.Log | PipelineScanResult | PolicyScanResult
     try {
-        let results: PipelineScanResult | Sarif.Log = JSON.parse(rawData.toString());
-        try {
-            output = converter.convertPipelineScanResults(results as PipelineScanResult)
-        } catch (_) {
-            output = converter.convertSarifLog(results as Sarif.Log)
+        let results: PolicyScanResult | PipelineScanResult | Sarif.Log = JSON.parse(rawData.toString());
+        if (scanType === 'policy') {
+            try {
+                output = converter.convertPolicyScanResults(results as PolicyScanResult)
+            } catch (error) {
+                core.info(`Failed to convert policy result to sarif : ${error}`);
+                output = converter.policyResultConvertSarifLog(results as Sarif.Log)
+            }
+        } else {
+            try {
+                output = converter.convertPipelineScanResults(results as PipelineScanResult)
+            } catch (error) {
+                core.info(`Failed to convert pipeline result to sarif : ${error}`);
+                output = converter.convertSarifLog(results as Sarif.Log)
+            }
         }
     } catch (error) {
         throw Error('Failed to parse input file ' + inputFilename)

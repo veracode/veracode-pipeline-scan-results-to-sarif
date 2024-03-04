@@ -14,6 +14,8 @@ program
 try {
     let opts = program.opts()
     run({
+        scanType: opts["pathReplace"],
+        resultsJson: opts["input"],
         inputFilename: opts["input"],
         outputFilename: opts["output"],
         ruleLevel: opts["ruleLevel"],

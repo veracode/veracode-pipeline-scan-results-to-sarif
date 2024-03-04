@@ -1,4 +1,6 @@
 export interface Options {
+    scanType: string,
+    resultsJson: string,
     inputFilename: string,
     outputFilename: string,
     ruleLevel: string,
