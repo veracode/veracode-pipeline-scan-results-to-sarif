@@ -24,7 +24,8 @@ try {
         repo_name: opts["pathReplace"],
         githubToken: opts["pathReplace"],
         commitSHA: opts["pathReplace"],
-        ref: opts["pathReplace"]
+        ref: opts["pathReplace"],
+        noupload: opts["pathReplace"]
     }, msg => console.log(msg))
 } catch (error) {
     console.error(error.message);

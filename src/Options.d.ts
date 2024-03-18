@@ -9,5 +9,6 @@ export interface Options {
     repo_name: string,
     githubToken: string,
     commitSHA: string,
-    ref: string
+    ref: string,
+    noupload: string
 }

@@ -52,6 +52,10 @@ inputs:
     description: 'The SHA of the commit to which the analysis you are uploading relates.'
     required: true
     default: ${{ github.sha }}
+  noupload:
+    description: 'Do not upload the SARIF file to the GitHub repository'
+    required: false
+    default: 'false'
 runs:
   using: 'node20'
   main: 'dist/index.js'
