@@ -64,38 +64,44 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
 
 //upload SARIF
 async function uploadSARIF(outputFilename:any, opt:any) {
-    //gzip compress and base64 encode the SARIF file
-    async function createGzipBase64 (outputFilename:any): Promise<string> {
-        try {
-            // Read the entire file into memory
-            const fileData = fs.readFileSync(outputFilename);
-    
-            // Compress the file data
-            const compressedData = gzipSync(fileData);
-    
-            // Encode the compressed data to base64
-            const base64Data = compressedData.toString('base64');
-            return base64Data;
-        } catch (error) {
-            throw error;
-        }
+    if (opt.noupload === 'true') {
+        console.log('Skipping upload to GitHub');
+        return;
     }
+    else {
+        //gzip compress and base64 encode the SARIF file
+        async function createGzipBase64 (outputFilename:any): Promise<string> {
+            try {
+                // Read the entire file into memory
+                const fileData = fs.readFileSync(outputFilename);
+        
+                // Compress the file data
+                const compressedData = gzipSync(fileData);
+        
+                // Encode the compressed data to base64
+                const base64Data = compressedData.toString('base64');
+                return base64Data;
+            } catch (error) {
+                throw error;
+            }
+        }
 
-    const octokit = new Octokit({
-        auth: opt.githubToken
-      })
+        const octokit = new Octokit({
+            auth: opt.githubToken
+        })
 
-    const base64Data = await createGzipBase64(outputFilename)
-    console.log('Base64 data: '+base64Data);
-    await octokit.request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
-//        headers: {
-//            authorization: opt.githubToken
-//        },
-//        owner: opt.repo_owner,
-//       repo: opt.repo_name,
-        ref: opt.ref,
-        commit_sha: opt.commitSHA,
-        sarif: base64Data
-    })
+        const base64Data = await createGzipBase64(outputFilename)
+        console.log('Base64 data: '+base64Data);
+        await octokit.request('POST /repos/'+opt.repo_owner+'/'+opt.repo_name+'/code-scanning/sarifs', {
+    //        headers: {
+    //            authorization: opt.githubToken
+    //        },
+    //        owner: opt.repo_owner,
+    //       repo: opt.repo_name,
+            ref: opt.ref,
+            commit_sha: opt.commitSHA,
+            sarif: base64Data
+        })
+    }
 
 }

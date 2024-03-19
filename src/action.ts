@@ -28,6 +28,7 @@ try {
         ruleLevel: core.getInput('finding-rule-level'),
         repo_owner: owner,
         repo_name: repo,
+        noupload: core.getInput('n0pload'),
         pathReplacers: [
             core.getInput('source-base-path-1'),
             core.getInput('source-base-path-2'),
