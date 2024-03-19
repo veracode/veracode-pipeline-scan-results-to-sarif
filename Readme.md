@@ -73,7 +73,9 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
 
 - ### `commitSHA`
   **Required** The SHA of the commit to which the analysis you are uploading relates
-
+  
+- ### `noupload`
+  **Optional** Will allow to only create the SARIF file and not upload it to the repository. This is useful if you want to use the SARIF file in a different way.
 
 
 ## Example usage
