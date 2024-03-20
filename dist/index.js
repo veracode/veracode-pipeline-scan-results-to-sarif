@@ -29069,7 +29069,7 @@ class Converter {
         return {
             // get the severity number to name
             level: undefined,
-            rank: issue.severity,
+            rank: undefined,
             message: {
                 text: issue.display_text,
             },
