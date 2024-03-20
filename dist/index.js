@@ -28978,6 +28978,25 @@ class Converter {
                   }
                 }
         */
+        let gh_severity;
+        if (issue.severity == 5) {
+            gh_severity = 10;
+        }
+        else if (issue.severity == 4) {
+            gh_severity = 7;
+        }
+        else if (issue.severity == 3) {
+            gh_severity = 4;
+        }
+        else if (issue.severity == 2) {
+            gh_severity = 2;
+        }
+        else if (issue.severity == 1) {
+            gh_severity = 1;
+        }
+        else {
+            gh_severity = 0;
+        }
         return {
             id: issue.cwe_id,
             name: issue.issue_type,
@@ -28986,7 +29005,7 @@ class Converter {
             },
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
-                severity: issue.severity,
+                severity: gh_severity,
                 category: issue.issue_type_id,
                 tags: [issue.issue_type_id]
             },
