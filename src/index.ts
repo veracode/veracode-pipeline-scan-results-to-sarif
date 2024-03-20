@@ -74,6 +74,8 @@ async function uploadSARIF(outputFilename:any, opt:any) {
             try {
                 // Read the entire file into memory
                 const fileData = fs.readFileSync(outputFilename);
+
+                console.log('File data: '+fileData);
         
                 // Compress the file data
                 const compressedData = gzipSync(fileData);

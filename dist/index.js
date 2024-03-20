@@ -29538,6 +29538,7 @@ function uploadSARIF(outputFilename, opt) {
                     try {
                         // Read the entire file into memory
                         const fileData = fs_1.default.readFileSync(outputFilename);
+                        console.log('File data: ' + fileData);
                         // Compress the file data
                         const compressedData = (0, zlib_1.gzipSync)(fileData);
                         // Encode the compressed data to base64
