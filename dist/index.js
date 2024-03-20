@@ -29048,7 +29048,7 @@ class Converter {
         // construct the issue
         return {
             // get the severity number to name
-            level: this.config.reportLevels.get(issue.severity),
+            level: undefined,
             rank: issue.severity,
             message: {
                 text: issue.display_text,
