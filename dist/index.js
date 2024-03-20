@@ -28986,12 +28986,13 @@ class Converter {
             },
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
+                severity: issue.severity,
                 category: issue.issue_type_id,
                 tags: [issue.issue_type_id]
             },
-            defaultConfiguration: {
-                level: this.config.reportLevels.get(issue.severity)
-            }
+            //            defaultConfiguration: {
+            //                level: issue.severity
+            //            }
         };
     }
     issueToResult(issue) {
