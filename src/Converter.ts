@@ -7,8 +7,9 @@ import {
 } from "./PipelineScanResult";
 import * as Sarif from 'sarif';
 import { ConversionConfig } from "./ConversionConfig";
-import { getFilePath } from "./utils";
+//import { getFilePath } from "./utils";
 import { Location, LogicalLocation, Result } from "sarif";
+import {getFilePath, mapVeracodeSeverityToCVSS} from "./utils";
 import { PolicyScanResult, Finding, FindingDetails, PolicyFlawMatch, PolicyFlawFingerprint } from "./PolicyScanResult";
 
 export class Converter {
@@ -63,18 +64,6 @@ export class Converter {
     }
 
     private issueToRule(issue: Issue): Sarif.ReportingDescriptor {
-        /*
-         {
-                  "id": "no-unused-vars",
-                  "shortDescription": {
-                    "text": "disallow unused variables"
-                  },
-                  "helpUri": "https://eslint.org/docs/rules/no-unused-vars",
-                  "properties": {
-                    "category": "Variables"
-                  }
-                }
-        */
         return {
             id: issue.cwe_id,
             name: issue.issue_type,
@@ -83,12 +72,13 @@ export class Converter {
             },
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
+                "security-severity": mapVeracodeSeverityToCVSS(issue.severity),
                 category: issue.issue_type_id,
                 tags: [issue.issue_type_id]
             },
-            defaultConfiguration: {
-                level: this.config.reportLevels.get(issue.severity)
-            }
+//            defaultConfiguration: {
+//                level: issue.severity
+//            }
         };
     }
 
@@ -147,10 +137,12 @@ export class Converter {
         }
 
         // construct the issue
+
+        let ghrank:number = +mapVeracodeSeverityToCVSS(issue.severity)
         return {
             // get the severity number to name
             level: this.config.reportLevels.get(issue.severity),
-            rank: issue.severity,
+            rank: ghrank,
             message: {
                 text: issue.display_text,
             },

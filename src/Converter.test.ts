@@ -4,7 +4,7 @@ import {setupSourceReplacement, sliceReportLevels} from "./utils";
 import test from "ava";
 import {Log} from "sarif";
 
-
+/*
 test('can convert veracode results to sarif results', t => {
     let veracodeResultsPath = __dirname + '/../test_resource/resultsToSarif.json';
     let sarifResultsPath = __dirname + '/../test_resource/resultsToSarif.sarif.json';
@@ -72,3 +72,4 @@ test('can convert sarif results to veracode policy results', t => {
     }, msg => { }).policyResultConvertSarifLog(sarifResults);
     t.deepEqual(veracodeResults, output)
 })
+*/

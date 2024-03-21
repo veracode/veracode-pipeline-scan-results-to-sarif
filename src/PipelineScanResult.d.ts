@@ -30,7 +30,7 @@ export interface Issue {
     title: string
     issue_id?: number
     gob?: string
-    severity: number
+    severity: number 
     issue_type_id?: string
     issue_type?: string
     cwe_id: string
