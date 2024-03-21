@@ -194,7 +194,7 @@ export class Converter {
         }
         return {
             // get the severity number to name
-            level: undefined,
+            level: this.config.reportLevels.get(gh_severity),
             rank: gh_severity,
             message: {
                 text: issue.display_text,
