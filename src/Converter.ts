@@ -7,8 +7,9 @@ import {
 } from "./PipelineScanResult";
 import * as Sarif from 'sarif';
 import { ConversionConfig } from "./ConversionConfig";
-import { getFilePath } from "./utils";
+//import { getFilePath } from "./utils";
 import { Location, LogicalLocation, Result } from "sarif";
+import {getFilePath, mapVeracodeSeverityToCVSS} from "./utils";
 import { PolicyScanResult, Finding, FindingDetails, PolicyFlawMatch, PolicyFlawFingerprint } from "./PolicyScanResult";
 
 export class Converter {
@@ -103,6 +104,7 @@ export class Converter {
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
                 severity: gh_severity,
+                "security-severity": mapVeracodeSeverityToCVSS(issue.severity),
                 category: issue.issue_type_id,
                 tags: [issue.issue_type_id]
             },

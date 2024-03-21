@@ -29006,6 +29006,7 @@ class Converter {
             helpUri: "https://cwe.mitre.org/data/definitions/" + issue.cwe_id + ".html",
             properties: {
                 severity: gh_severity,
+                "security-severity": (0, utils_1.mapVeracodeSeverityToCVSS)(issue.severity),
                 category: issue.issue_type_id,
                 tags: [issue.issue_type_id]
             },
@@ -29623,7 +29624,7 @@ function uploadSARIF(outputFilename, opt) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFilePath = exports.sliceReportLevels = exports.setupSourceReplacement = void 0;
+exports.mapVeracodeSeverityToCVSS = exports.getFilePath = exports.sliceReportLevels = exports.setupSourceReplacement = void 0;
 const setupSourceReplacement = (...subs) => {
     return subs
         .filter(sub => sub && sub.length > 0)
@@ -29683,6 +29684,33 @@ const getFilePath = (filePath, replacer) => {
     return final;
 };
 exports.getFilePath = getFilePath;
+const mapVeracodeSeverityToCVSS = (severity) => {
+    // https://docs.veracode.com/r/review_severity_exploitability#veracode-finding-severities
+    // https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels
+    switch (severity) {
+        // Veracode Very High, GitHub Critical
+        case 5:
+            return "9.0";
+        // Veracode High, GitHub High
+        case 4:
+            return "7.0";
+        // Veracode Medium, GitHub Medium
+        case 3:
+            return "4.0";
+        // Veracode Low, GitHub Low
+        case 2:
+            return "0.1";
+        // Veracode Very Low, GitHub Low - not a perfect mapping but this can't be GitHub None as that maps to Veracode Informational
+        case 1:
+            return "0.1";
+        // Veracode Informational, GitHub None
+        case 0:
+            return "0.0";
+        default:
+            return "0.0";
+    }
+};
+exports.mapVeracodeSeverityToCVSS = mapVeracodeSeverityToCVSS;
 
 
 /***/ }),
