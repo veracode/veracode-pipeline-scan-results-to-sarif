@@ -167,10 +167,35 @@ export class Converter {
         }
 
         // construct the issue
+        let gh_severity: number
+        let gh_severity_name: string
+        if (issue.severity == 5){
+                gh_severity = 10
+                gh_severity_name = "Critical"
+        }
+        else if (issue.severity == 4){
+                gh_severity = 7
+                gh_severity_name = "High"
+        }
+        else if (issue.severity == 3){
+                gh_severity = 4
+                gh_severity_name = "Medium"
+        }
+        else if (issue.severity == 2){
+                gh_severity = 2
+                gh_severity_name = "Low"
+        }
+        else if (issue.severity == 1){
+                gh_severity = 1
+                gh_severity_name = "Low"
+        }
+        else {
+                gh_severity = 0
+        }
         return {
             // get the severity number to name
             level: undefined,
-            rank: undefined,
+            rank: gh_severity,
             message: {
                 text: issue.display_text,
             },
