@@ -299,12 +299,13 @@ export class Converter {
             },
             helpUri: "https://cwe.mitre.org/data/definitions/" + finding.finding_details.cwe?.id.toString() + ".html",
             properties: {
+                "security-severity": mapVeracodeSeverityToCVSS(finding.finding_details.severity),
                 category: finding.scan_type,
                 tags: [finding.scan_type]
             },
-            defaultConfiguration: {
-                level: this.config.reportLevels.get(finding.finding_details.severity)
-            }
+            // defaultConfiguration: {
+            //     level: this.config.reportLevels.get(finding.finding_details.severity)
+            // }
         };
     }
 
@@ -352,10 +353,11 @@ export class Converter {
         }
 
         // construct the issue
+        let ghrank:number = +mapVeracodeSeverityToCVSS(finding_details.severity)
         return {
             // get the severity number to name
             level: this.config.reportLevels.get(finding_details.severity),
-            rank: finding_details.severity,
+            rank: ghrank,
             message: {
                 text: finding.description,
             },
