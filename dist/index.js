@@ -29207,7 +29207,7 @@ class Converter {
         let location = {
             physicalLocation: {
                 artifactLocation: {
-                    uri: (0, utils_1.getFilePath)(finding_details.file_path, this.config.replacers)
+                    uri: (0, utils_1.removeLeadingSlash)((0, utils_1.getFilePath)(finding_details.file_path, this.config.replacers))
                 },
                 region: {
                     startLine: finding_details.file_line_number
@@ -29570,7 +29570,7 @@ function uploadSARIF(outputFilename, opt) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.mapVeracodeSeverityToCVSS = exports.getFilePath = exports.sliceReportLevels = exports.setupSourceReplacement = void 0;
+exports.removeLeadingSlash = exports.mapVeracodeSeverityToCVSS = exports.getFilePath = exports.sliceReportLevels = exports.setupSourceReplacement = void 0;
 const setupSourceReplacement = (...subs) => {
     return subs
         .filter(sub => sub && sub.length > 0)
@@ -29657,6 +29657,16 @@ const mapVeracodeSeverityToCVSS = (severity) => {
     }
 };
 exports.mapVeracodeSeverityToCVSS = mapVeracodeSeverityToCVSS;
+const removeLeadingSlash = (str) => {
+    // Check if the string starts with '/'
+    if (str.charAt(0) === '/') {
+        // Remove the leading '/'
+        return str.substring(1);
+    }
+    // If '/' is not present at the first character, return the original string
+    return str;
+};
+exports.removeLeadingSlash = removeLeadingSlash;
 
 
 /***/ }),
