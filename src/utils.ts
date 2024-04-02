@@ -88,3 +88,13 @@ export const mapVeracodeSeverityToCVSS = (severity: number): string => {
             return "0.0";
     }
 }
+
+export const removeLeadingSlash = (str: string): string => {
+    // Check if the string starts with '/'
+    if (str.charAt(0) === '/') {
+        // Remove the leading '/'
+        return str.substring(1);
+    }
+    // If '/' is not present at the first character, return the original string
+    return str;
+}

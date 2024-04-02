@@ -9,7 +9,7 @@ import * as Sarif from 'sarif';
 import { ConversionConfig } from "./ConversionConfig";
 //import { getFilePath } from "./utils";
 import { Location, LogicalLocation, Result } from "sarif";
-import {getFilePath, mapVeracodeSeverityToCVSS} from "./utils";
+import {getFilePath, mapVeracodeSeverityToCVSS, removeLeadingSlash} from "./utils";
 import { PolicyScanResult, Finding, FindingDetails, PolicyFlawMatch, PolicyFlawFingerprint } from "./PolicyScanResult";
 
 export class Converter {
@@ -315,7 +315,7 @@ export class Converter {
         let location: Sarif.Location = {
             physicalLocation: {
                 artifactLocation: {
-                    uri: getFilePath(finding_details.file_path, this.config.replacers)
+                    uri: removeLeadingSlash(getFilePath(finding_details.file_path, this.config.replacers))
                 },
                 region: {
                     startLine: finding_details.file_line_number
