@@ -29151,6 +29151,7 @@ class Converter {
             .map(issue => this.findingToRule(issue));
         // convert to SARIF json
         let sarifResults = policyScanResult._embedded.findings
+            .filter(finding => finding.finding_details.file_path !== undefined)
             .map(findings => this.findingToResult(findings));
         // construct the full SARIF content
         return {
@@ -29659,8 +29660,6 @@ const mapVeracodeSeverityToCVSS = (severity) => {
 exports.mapVeracodeSeverityToCVSS = mapVeracodeSeverityToCVSS;
 const removeLeadingSlash = (str) => {
     // Check if the string starts with '/'
-    if (!str)
-        return '';
     if (str.charAt(0) === '/') {
         // Remove the leading '/'
         return str.substring(1);
