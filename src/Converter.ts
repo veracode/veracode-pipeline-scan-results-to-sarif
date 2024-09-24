@@ -263,12 +263,13 @@ export class Converter {
             .map(findings => this.findingToResult(findings));
 
         if (sarifResults.length !== policyScanResult._embedded.findings.length) {
-            core.warning("#####################");
-            core.warning("Veracode identified several flaws without correct filenames and line numbers attached to it.");
-            core.warning("This usually happens if there is no debug information available for the uploaded application.");
-            core.warning("Please check your uploaded application and the Veracode packaging guidance here https://docs.veracode.com/r/compilation_packaging.");
-            core.warning("If further information is required please schedule a Consultation Call via the Veracode platform or contact support@veracode.com.");
-            core.warning("#####################");
+            core.warning(`
+#####################
+Veracode identified several flaws without correct filenames and line numbers attached to it.
+This usually happens if there is no debug information available for the uploaded application.
+Please check your uploaded application and the Veracode packaging guidance here https://docs.veracode.com/r/compilation_packaging.
+If further information is required please schedule a Consultation Call via the Veracode platform or contact support@veracode.com.
+#####################`)
         }
 
         // construct the full SARIF content
