@@ -28917,13 +28917,37 @@ function wrappy (fn, cb) {
 /***/ }),
 
 /***/ 8161:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Converter = void 0;
 const utils_1 = __nccwpck_require__(5496);
+const core = __importStar(__nccwpck_require__(9512));
 class Converter {
     constructor(conversionConfig, msgFunc) {
         this.config = conversionConfig;
@@ -29154,13 +29178,14 @@ class Converter {
             .filter(finding => finding.finding_details.file_path !== undefined)
             .map(findings => this.findingToResult(findings));
         if (sarifResults.length !== policyScanResult._embedded.findings.length) {
-            this.msgFunc(`::warning::
-#####################
-Veracode identified several flaws without correct filenames and line numbers attached to it.
-This usually happens if there is no debug information available for the uploaded application.
-Please check your uploaded application and the Veracode packaging guidance here https://docs.veracode.com/r/compilation_packaging.
-If further information is required please schedule a Consultation Call via the Veracode platform or contact support@veracode.com.
-#####################`);
+            core.warning("Veracode identified several flaws without correct filenames and line numbers attached to it.");
+            //             this.msgFunc(`::warning::
+            // #####################
+            // Veracode identified several flaws without correct filenames and line numbers attached to it.
+            // This usually happens if there is no debug information available for the uploaded application.
+            // Please check your uploaded application and the Veracode packaging guidance here https://docs.veracode.com/r/compilation_packaging.
+            // If further information is required please schedule a Consultation Call via the Veracode platform or contact support@veracode.com.
+            // #####################`)
         }
         // construct the full SARIF content
         return {
