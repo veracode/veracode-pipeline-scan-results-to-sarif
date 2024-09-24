@@ -29153,6 +29153,15 @@ class Converter {
         let sarifResults = policyScanResult._embedded.findings
             .filter(finding => finding.finding_details.file_path !== undefined)
             .map(findings => this.findingToResult(findings));
+        if (sarifResults.length !== policyScanResult._embedded.findings.length) {
+            this.msgFunc(`
+                #####################
+                Veracode identified several flaws without correct filenames and line numbers attached to it.
+                This usually happens if there is no debug information available for the uploaded application.
+                Please check your uploaded application and the Veracode packaging guidance here https://docs.veracode.com/r/compilation_packaging.
+                If further information is required please schedule a Consultation Call via the Veracode platform or contact support@veracode.com.
+                #####################`);
+        }
         // construct the full SARIF content
         return {
             $schema: "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
