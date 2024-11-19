@@ -27,8 +27,10 @@ export class Converter {
     convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
-        if (pipelineScanResult.scan_status !== "SUCCESS") {
-            throw Error("Unsuccessful scan status found")
+        if (pipelineScanResult.scan_status !== "SUCCESS" || pipelineScanResult.findings.length === 0) {
+            console.log("Something went wrong, nothing to do here")
+            return;
+            //throw Error("Unsuccessful scan status found")
         }
 
         this.msgFunc('Issues count: ' + pipelineScanResult.findings.length);

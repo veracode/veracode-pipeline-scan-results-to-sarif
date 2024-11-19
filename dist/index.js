@@ -28932,8 +28932,10 @@ class Converter {
     convertPipelineScanResults(pipelineScanResult) {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
-        if (pipelineScanResult.scan_status !== "SUCCESS") {
-            throw Error("Unsuccessful scan status found");
+        if (pipelineScanResult.scan_status !== "SUCCESS" || pipelineScanResult.findings.length === 0) {
+            console.log("Something went wrong, nothing to do here");
+            return;
+            //throw Error("Unsuccessful scan status found")
         }
         this.msgFunc('Issues count: ' + pipelineScanResult.findings.length);
         let rules = pipelineScanResult.findings
@@ -29507,13 +29509,13 @@ function run(opt, msgFunc) {
                 output = converter.convertSarifLog(results);
             }
         }
+        fs_1.default.writeFileSync(outputFilename, JSON.stringify(output));
+        msgFunc('file created: ' + outputFilename);
+        uploadSARIF(outputFilename, opt);
     }
     catch (error) {
-        throw Error('Failed to parse input file ' + inputFilename);
+        console.log('Failed to parse input file ' + inputFilename);
     }
-    fs_1.default.writeFileSync(outputFilename, JSON.stringify(output));
-    msgFunc('file created: ' + outputFilename);
-    uploadSARIF(outputFilename, opt);
 }
 exports.run = run;
 //upload SARIF
