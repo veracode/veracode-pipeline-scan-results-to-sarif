@@ -45,7 +45,7 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
   This setting is not needed anymore as GitHub as introduced granular control over the severity of findings  
   Please find more informarion here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels**  
     
-  **Optional** The conversion rule from Veracode finding levels to Github levels.
+  **Optional** The conversion rule from Veracode finding levels to GitHub levels.
 
   - **Veracode levels**: 5 = `Very High`, 4 = `High`, 3 = `Medium`, 2 = `Low`, 1 = `Very Low`, 0 = `informational`.
   - **GitHub levels**: `error`, `warning`, `note`.  
