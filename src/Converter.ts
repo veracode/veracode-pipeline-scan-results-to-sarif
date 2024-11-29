@@ -201,24 +201,24 @@ export class Converter {
     }
 
     private fingerprintsToFlawMatch(fingerprints: { [key: string]: string },
-        partialFingerpirnts: { [key: string]: string }): FlawFingerprint {
-        if (partialFingerpirnts &&
+        partialFingerprints: { [key: string]: string }): FlawFingerprint {
+        if (partialFingerprints &&
             ["procedureHash", "prototypeHash",
                 "flawHash", "flawHashCount", "flawHashOrdinal",
                 "causeHash", "causeHashCount", "causeHashOrdinal"]
-                .every(propertyName => propertyName in partialFingerpirnts && partialFingerpirnts[propertyName])) {
+                .every(propertyName => propertyName in partialFingerprints && partialFingerprints[propertyName])) {
             // we do this because the values of fingerprints is string type
             // but FLawMatch have number typed properties
             this.msgFunc("Using partial fingerprint keys")
             return {
-                procedure_hash: partialFingerpirnts["procedureHash"].toString(),
-                cause_hash: partialFingerpirnts["causeHash"].toString(),
-                cause_hash_count: parseInt(partialFingerpirnts["causeHashCount"]),
-                cause_hash_ordinal: parseInt(partialFingerpirnts["causeHashOrdinal"]),
-                flaw_hash: partialFingerpirnts["flawHash"].toString(),
-                flaw_hash_count: parseInt(partialFingerpirnts["flawHashCount"]),
-                flaw_hash_ordinal: parseInt(partialFingerpirnts["flawHashOrdinal"]),
-                prototype_hash: partialFingerpirnts["prototypeHash"].toString(),
+                procedure_hash: partialFingerprints["procedureHash"].toString(),
+                cause_hash: partialFingerprints["causeHash"].toString(),
+                cause_hash_count: parseInt(partialFingerprints["causeHashCount"]),
+                cause_hash_ordinal: parseInt(partialFingerprints["causeHashOrdinal"]),
+                flaw_hash: partialFingerprints["flawHash"].toString(),
+                flaw_hash_count: parseInt(partialFingerprints["flawHashCount"]),
+                flaw_hash_ordinal: parseInt(partialFingerprints["flawHashOrdinal"]),
+                prototype_hash: partialFingerprints["prototypeHash"].toString(),
             };
         }
         let fingerprintKeys = Object.keys(fingerprints);
@@ -417,21 +417,21 @@ export class Converter {
         }
     }
 
-    private fingerprintsToPolicyFlawMatch(partialFingerpirnts: { [key: string]: string }): PolicyFlawFingerprint {
-        if (partialFingerpirnts &&
+    private fingerprintsToPolicyFlawMatch(partialFingerprints: { [key: string]: string }): PolicyFlawFingerprint {
+        if (partialFingerprints &&
             ["context_guid", "file_path", "procedure"]
-                .every(propertyName => propertyName in partialFingerpirnts && partialFingerpirnts[propertyName])) {
+                .every(propertyName => propertyName in partialFingerprints && partialFingerprints[propertyName])) {
             // we do this because the values of fingerprints is string type
             // but FLawMatch have number typed properties
             this.msgFunc("Using partial fingerprint keys")
             return {
-                context_guid: partialFingerpirnts["procedureHash"].toString(),
-                file_path: partialFingerpirnts["file_path"].toString(),
-                procedure: partialFingerpirnts["procedure"].toString(),
+                context_guid: partialFingerprints["procedureHash"].toString(),
+                file_path: partialFingerprints["file_path"].toString(),
+                procedure: partialFingerprints["procedure"].toString(),
 
             };
         }
-        let fingerprintKeys = Object.keys(partialFingerpirnts);
+        let fingerprintKeys = Object.keys(partialFingerprints);
         let versionRegExp = new RegExp(/\/v(\d+)$/);
         if (fingerprintKeys.length > 0) {
             let highestKey = fingerprintKeys.reduce((current, nextValue) => {
@@ -447,7 +447,7 @@ export class Converter {
             }, fingerprintKeys[0]);
             this.msgFunc("Using " + highestKey + " as main fingerprint");
             return {
-                sarif_fingerprint: partialFingerpirnts[highestKey]
+                sarif_fingerprint: partialFingerprints[highestKey]
             };
         }
         throw Error("Flaw fingerprints not set or error parsing SARIF fingerprints");
