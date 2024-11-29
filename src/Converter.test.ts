@@ -57,7 +57,7 @@ test('can convert veracode policy scan results to sarif results', t => {
 })
 
 test('can convert sarif results to veracode policy results', t => {
-    let veracodeResultsPath = __dirname + '/../test_resource/sarifTopolicyFlaws.json';
+    let veracodeResultsPath = __dirname + '/../test_resource/sarifToPolicyFlaws.json';
     let sarifResultsPath = __dirname + '/../test_resource/policy_flaws.sarif.json';
 
     let veracodeResultsData = fs.readFileSync(veracodeResultsPath);
