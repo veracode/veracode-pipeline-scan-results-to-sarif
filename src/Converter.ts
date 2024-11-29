@@ -208,7 +208,7 @@ export class Converter {
                 "causeHash", "causeHashCount", "causeHashOrdinal"]
                 .every(propertyName => propertyName in partialFingerprints && partialFingerprints[propertyName])) {
             // we do this because the values of fingerprints is string type
-            // but FLawMatch have number typed properties
+            // but FlawMatch have number typed properties
             this.msgFunc("Using partial fingerprint keys")
             return {
                 procedure_hash: partialFingerprints["procedureHash"].toString(),
@@ -422,7 +422,7 @@ export class Converter {
             ["context_guid", "file_path", "procedure"]
                 .every(propertyName => propertyName in partialFingerprints && partialFingerprints[propertyName])) {
             // we do this because the values of fingerprints is string type
-            // but FLawMatch have number typed properties
+            // but FlawMatch have number typed properties
             this.msgFunc("Using partial fingerprint keys")
             return {
                 context_guid: partialFingerprints["procedureHash"].toString(),
