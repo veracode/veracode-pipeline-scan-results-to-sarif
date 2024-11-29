@@ -60,10 +60,10 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
   --- | ---
 
 - ### `repo_owner`
-  **Optional** The account owner of the repository. The name is not case sensitive. This is only required if the action runs on a different repository than the one where the results should be published.
+  **Optional** The account owner of the repository. The name is not case-sensitive. This is only required if the action runs on a different repository than the one where the results should be published.
 
 - ### `repo_name`
-  **Optional** The name of the repository without the .git extension. The name is not case sensitive. This is only required if the action runs on a different repository than the one where the results should be published
+  **Optional** The name of the repository without the .git extension. The name is not case-sensitive. This is only required if the action runs on a different repository than the one where the results should be published
 
 - ### `githubToken`
   **Required** GitHub token is a secure token that allows the workflow to interact with the GitHub API and perform actions on behalf of the repository or user
