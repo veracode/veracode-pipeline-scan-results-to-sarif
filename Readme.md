@@ -43,7 +43,7 @@ To configure this action, edit the settings in the provided /workflows/main.yml 
   The 'finding-rule-level' input is deprecated and will be removed in a future release.  
   It will be overwritten witten with 4:3:0  
   This setting is not needed anymore as GitHub as introduced granular control over the severity of findings  
-  Please find more informarion here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels**  
+  Please find more information here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels**  
     
   **Optional** The conversion rule from Veracode finding levels to GitHub levels.
 
