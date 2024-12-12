@@ -79,6 +79,7 @@ export const getFilePath = (filePath: string, replacer: PathReplacer[]) => {
             }
         }
         //console.log('Result: '+result)
+
         return result;
     }
 
@@ -91,7 +92,7 @@ export const getFilePath = (filePath: string, replacer: PathReplacer[]) => {
 
     if (foundFilePath) {
         //filepath = foundFilePath;
-        final = foundFilePath.replace(process.cwd(), '')
+        final = foundFilePath.replace(`${process.cwd()}/`, '')
         console.log('Adjusted Filepath: ' + final);
     } else {
         final = filePath;
