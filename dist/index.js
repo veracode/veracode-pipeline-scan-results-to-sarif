@@ -28950,7 +28950,7 @@ class Converter {
             .map(issue => this.issueToResult(issue));
         // construct the full SARIF content
         return {
-            $schema: "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            $schema: "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
             version: "2.1.0",
             runs: [
                 {
@@ -29154,7 +29154,7 @@ class Converter {
             .map(findings => this.findingToResult(findings));
         // construct the full SARIF content
         return {
-            $schema: "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            $schema: "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
             version: "2.1.0",
             runs: [
                 {
