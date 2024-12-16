@@ -23,7 +23,7 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
         core.info("WARNING")
         core.info("##################")
         core.info("The 'finding-rule-level' input is deprecated and will be removed in a future release.")
-        core.info("It will be overwritten with with 4:3:0")
+        core.info("It will be overwritten with 4:3:0")
         core.info("This setting is not needed anymore as GitHub as introduced granular control over the severity of findings")
         core.info("Please find more information here: https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/#about-security-severity-levels")
         core.info("##################")
