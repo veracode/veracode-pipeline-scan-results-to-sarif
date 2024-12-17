@@ -52,13 +52,16 @@ export function run(opt: Options, msgFunc: (msg: string) => void) {
                 output = converter.convertSarifLog(results as Sarif.Log)
             }
         }
-    } catch (error) {
-        throw Error('Failed to parse input file ' + inputFilename)
-    }
-    fs.writeFileSync(outputFilename, JSON.stringify(output));
-    msgFunc('file created: ' + outputFilename);
 
-    uploadSARIF(outputFilename, opt)
+        fs.writeFileSync(outputFilename, JSON.stringify(output));
+        msgFunc('file created: ' + outputFilename);
+
+        uploadSARIF(outputFilename, opt)
+
+    } catch (error) {
+        console.log('Failed to parse input file ' + inputFilename)
+    }
+    
 
 }
 

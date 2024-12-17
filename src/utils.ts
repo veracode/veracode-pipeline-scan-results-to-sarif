@@ -1,6 +1,8 @@
 import {ReportingConfiguration} from "sarif";
 import {PathReplacer} from "./ConversionConfig";
 import * as core from '@actions/core'
+import * as fs from 'fs';
+import * as path from 'path';
 
 export const setupSourceReplacement = (...subs: string[]): PathReplacer[] => {
     return subs
@@ -54,12 +56,63 @@ export const sliceReportLevels = (requestedLevels: string): Map<number, Reportin
 
 export const getFilePath = (filePath: string, replacer: PathReplacer[]) => {
     let final = filePath;
+
+    // new rewrite path
+    // new autorewrite file path
+    function searchFile(dir: string, filename: any): string | null {
+        //console.log('Inside search: Directory: '+dir+' - Filename: '+filename)
+        let result = null;
+        const files = fs.readdirSync(dir);
+    
+        for (const file of files) {
+            if (file === '.git') continue;
+            const fullPath = path.join(dir, file);
+            const stat = fs.statSync(fullPath);
+    
+            if (stat.isDirectory()) {
+                result = searchFile(fullPath, filename);
+                if (result) break;
+            } else if (file === filename) {
+                console.log('File found: '+fullPath)
+                result = fullPath;
+                break;
+            }
+        }
+        //console.log('Result: '+result)
+
+        return result;
+    }
+
+    // Search for the file starting from the current directory
+    var filename = filePath
+    const currentDir = process.cwd();
+    console.log('Current Directory: ' + currentDir);
+    console.log('Filename: ' + filename);
+    const foundFilePath = searchFile(currentDir, path.basename(filename));
+
+    if (foundFilePath) {
+        //filepath = foundFilePath;
+        final = foundFilePath.replace(`${process.cwd()}/`, '')
+        console.log('Adjusted Filepath: ' + final);
+    } else {
+        final = filePath;
+        console.log('File not found in the current directory or its subdirectories.');
+    }
+
+    return final;
+
+
+
+/* old rewrite path
+
     replacer.forEach(element => {
         if (element.regex.test(final)) {
             final = final.replace(element.regex, element.value);
         }
     });
     return final;
+
+old rewirte path */
 }
 
 export const mapVeracodeSeverityToCVSS = (severity: number): string => {
@@ -91,7 +144,7 @@ export const mapVeracodeSeverityToCVSS = (severity: number): string => {
 
 export const removeLeadingSlash = (str: string): string => {
     // Check if the string starts with '/'
-    if (str.charAt(0) === '/') {
+    if (str?.charAt(0) === '/') {
         // Remove the leading '/'
         return str.substring(1);
     }
