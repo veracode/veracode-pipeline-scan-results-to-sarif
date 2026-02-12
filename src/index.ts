@@ -90,9 +90,10 @@ async function uploadSARIF(outputFilename:any, opt:any) {
                 throw error;
             }
         }
-
+        const baseUrl = process.env.GITHUB_API_URL || 'https://api.github.com';
         const octokit = new Octokit({
-            auth: opt.githubToken
+            auth: opt.githubToken,
+            baseUrl: baseUrl
         })
 
         const base64Data = await createGzipBase64(outputFilename)
