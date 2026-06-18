@@ -1,0 +1,64 @@
+name: Sync Action into Veracode
+on:
+  push:
+    tags:
+      - v**
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    name: Sync Flaws To Sarif Repo
+    
+steps:
+  - name: Checkout flaws-to-sarif repo
+    uses: actions/checkout@v4
+    with:
+      path: flaws-to-sarif
+
+  - name: Checkout ghes-actions-integration repo
+    uses: actions/checkout@v4
+    with:
+      repository: veracode/ghes-actions-integration
+      token: ${{ secrets.PAT_TOKEN }}
+      path: ghes-actions-integration
+      persist-credentials: false
+
+  - name: Copy dist and action.yml files
+    run: |
+      cp -r flaws-to-sarif/dist ghes-actions-integration/actions/flaws-to-sarif/
+      cp flaws-to-sarif/action.yml ghes-actions-integration/actions/flaws-to-sarif/
+
+  - name: Create branch and push changes
+    run: |
+      cd ghes-actions-integration
+      git config user.name "veracode"
+      git config user.email "user@veracode.com"
+      BRANCH_NAME="sync-sarif-$(date +%s)"
+      git checkout -b $BRANCH_NAME
+      git add actions
+      
+      # Only commit and push if there are changes
+      if ! git diff --cached --quiet; then
+        git commit -m "Sync Flaws To Sarif dist and action.yml"
+        git push <https://x-access-token:${{> secrets.PAT_TOKEN }}@github.com/veracode/ghes-actions-integration.git $BRANCH_NAME
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "CHANGES_MADE=true" >> $GITHUB_ENV
+      else
+        echo "No changes to commit"
+        echo "CHANGES_MADE=false" >> $GITHUB_ENV
+      fi
+
+  - name: Create Pull Request with GitHub CLI
+    if: env.CHANGES_MADE == 'true'
+    run: |
+      gh pr create \\
+        --repo veracode/ghes-actions-integration \\
+        --base main \\
+        --head ${{ env.BRANCH_NAME }} \\
+        --title "Sync latest changes from flaws-to-sarif repository" \\
+        --body "Sync from flaws-to-sarif repository
+        
+        - Updated dist folder
+        - Updated action.yml file"
+    env:
+      GH_TOKEN: ${{ secrets.PAT_TOKEN }}
