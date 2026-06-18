@@ -28,11 +28,27 @@ export class Converter {
     convertPipelineScanResults(pipelineScanResult: PipelineScanResult): Sarif.Log {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
-        if (pipelineScanResult.scan_status !== "SUCCESS" || pipelineScanResult.findings.length === 0) {
-            console.log("Something went wrong, nothing to do here")
-            return;
-            //throw Error("Unsuccessful scan status found")
+        if (pipelineScanResult.scan_status !== "SUCCESS") {
+        throw new Error("Unsuccessful scan status: " + pipelineScanResult.scan_status);
         }
+        if (pipelineScanResult.findings.length === 0) {
+        this.msgFunc('No findings detected, generating empty sarif');
+        return {
+            $schema: "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+            version: "2.1.0",
+            runs: [
+                {
+                    tool: {
+                        driver: {
+                            name: "Veracode Static Analysis Pipeline Scan",
+                            rules: []
+                        }
+                    },
+                    results: []
+                }
+            ]
+        };
+    }
 
         this.msgFunc('Issues count: ' + pipelineScanResult.findings.length);
         let rules: Sarif.ReportingDescriptor[] = pipelineScanResult.findings
