@@ -35,10 +35,10 @@ inputs:
     required: true
     default: '4:3:0'
   repo_owner: 
-    description: 'The account owner of the repository. The name is not case sensitive.'
+    description: 'The account owner of the repository. The name is not case-sensitive.'
     required: false
   repo_name: 
-    description: 'The name of the repository without the .git extension. The name is not case sensitive.'
+    description: 'The name of the repository without the .git extension. The name is not case-sensitive.'
     required: false
   githubToken: 
     description: 'GitHub token is a secure token that allows the workflow to interact with the GitHub API and perform actions on behalf of the repository or user'
